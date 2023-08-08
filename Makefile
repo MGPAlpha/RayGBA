@@ -29,8 +29,8 @@ CC                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-gcc
 CFLAGS             = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
 
 # --- C++ Compiler
-CPP                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-g++
-CPPFLAGS             = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
+CPP                = $(DKPATH)/devkitARM/bin/arm-none-eabi-g++
+CPPFLAGS           = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
 # --- Linker
 LD                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-gcc
 LDFLAGS            = $(SPECS) $(MODEL) -lm
