@@ -19,6 +19,8 @@ typedef struct fixed32 {
     struct fixed32 operator/(fixed32);
     struct fixed32 operator/(int);
 
+    struct fixed32 sqrt();
+
     operator short();
 
 } fixed32;

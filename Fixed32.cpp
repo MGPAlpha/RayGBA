@@ -1,5 +1,9 @@
 #include "Fixed32.hpp"
 
+extern "C" {
+#include "fpsqrt/fpsqrt.h"
+}
+
 // Double conversion from https://stackoverflow.com/a/187823
 
 fixed32::fixed32() {
@@ -78,6 +82,12 @@ fixed32 fixed32::operator/(fixed32 b) {
 fixed32 fixed32::operator/(int b) {
     fixed32 result;
     result.value = this->value / b;
+    return result;
+}
+
+fixed32 fixed32::sqrt() {
+    fixed32 result;
+    result.value = sqrt_fx16_16_to_fx16_16((fx16_16_t)this->value);
     return result;
 }
 

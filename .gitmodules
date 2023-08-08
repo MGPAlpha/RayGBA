@@ -1,0 +1,3 @@
+[submodule "fpsqrt"]
+	path = fpsqrt
+	url = git@github.com:chmike/fpsqrt.git

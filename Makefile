@@ -3,8 +3,12 @@ PRODUCT_NAME       = Project
 # You probably won't need to touch anything below here!!!
 # The one exception is the cleanup stuff.
 
-SOURCES            = $(wildcard *.c)
-CPPSOURCES         = $(wildcard *.cpp)
+SUBDIR = fpsqrt
+
+SOURCES            = $(wildcard *.c $(foreach fd, $(SUBDIR), $(fd)/*.c))
+SOURCES           := $(filter-out $(foreach fd, $(SUBDIR), $(fd)/main.c), $(SOURCES))
+CPPSOURCES         = $(wildcard *.cpp $(foreach fd, $(SUBDIR), $(fd)/*.cpp))
+CPPSOURCES           := $(filter-out $(foreach fd, $(SUBDIR), $(fd)/main.cpp), $(CPPSOURCES))
 ASMSOURCES         = $(wildcard *.asm)
 AUDIOSOURCES       = $(wildcard *.wav)
 DKPATH             = /opt/devkitpro
