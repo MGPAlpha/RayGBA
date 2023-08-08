@@ -4,6 +4,7 @@ PRODUCT_NAME       = Project
 # The one exception is the cleanup stuff.
 
 SOURCES            = $(wildcard *.c)
+CPPSOURCES         = $(wildcard *.cpp)
 ASMSOURCES         = $(wildcard *.asm)
 AUDIOSOURCES       = $(wildcard *.wav)
 DKPATH             = /opt/devkitpro
@@ -27,6 +28,9 @@ ASFLAGS            = -mthumb-interwork
 CC                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-gcc
 CFLAGS             = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
 
+# --- C++ Compiler
+CPP                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-g++
+CPPFLAGS             = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
 # --- Linker
 LD                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-gcc
 LDFLAGS            = $(SPECS) $(MODEL) -lm
@@ -45,7 +49,8 @@ ASMOBJECTS = $(ASMSOURCES:.asm=.o)
 AUDIOOBJECTS = $(AUDIOSOURCES:.wav=.c)
 AUDIOHEADERS = $(AUDIOSOURCES:.wav=.h)
 COBJECTS = $(SOURCES:.c=.o) $(AUDIOSOURCES:.wav=.o)
-OBJECTS = $(COBJECTS) $(ASMOBJECTS)
+CPPOBJECTS = $(CPPSOURCES:.cpp=.o)
+OBJECTS = $(COBJECTS) $(ASMOBJECTS) $(CPPOBJECTS)
 
 
 # --- Main build target
@@ -70,6 +75,10 @@ $(ASMOBJECTS) : %.o : %.asm
 # -- Build .c files into .o files
 $(COBJECTS) : %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+# -- Build .cpp files into .o files
+$(CPPOBJECTS) : %.o : %.cpp
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 # -- Build .wav files into .c and .h files
 $(AUDIOOBJECTS) : %.c : %.wav
