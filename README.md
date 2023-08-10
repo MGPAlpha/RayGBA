@@ -1,2 +1,2 @@
-# DownwellGBA
-A demake of Downwell for the Gameboy Advance
+# RayGBA
+A static raycasting renderer for the GBA

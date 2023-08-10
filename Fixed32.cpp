@@ -14,7 +14,7 @@ fixed32::fixed32(double val) {
     *this = val;
 }
 
-fixed32::fixed32(short val) {
+fixed32::fixed32(int val) {
     *this = val;
 }
 
@@ -32,7 +32,7 @@ fixed32 fixed32::operator=(double val) {
     return *this;
 }
 
-fixed32 fixed32::operator=(short val) {
+fixed32 fixed32::operator=(int val) {
     this->value = ((int)val)<<16;
     return *this;
 }
