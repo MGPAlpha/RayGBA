@@ -6,10 +6,12 @@ Vector3::Vector3(fixed32 x, fixed32 y, fixed32 z) {
     this->z = z;
 }
 
-Vector3::Vector3(fixed32 m) {
-    this->x = m;
-    this->y = m;
-    this->z = m;
+Vector3::Vector3(fixed32 m) : Vector3(m,m,m) {
+
+}
+
+Vector3::Vector3() : Vector3(0) {
+    
 }
 
 Vector3 Vector3::operator+(Vector3 b) {

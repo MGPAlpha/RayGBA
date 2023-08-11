@@ -1,5 +1,5 @@
-#ifndef FIXED32
-#define FIXED32
+#ifndef FIXED32_HPP
+#define FIXED32_HPP
 
 typedef struct fixed32 {
     int value;
