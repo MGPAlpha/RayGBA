@@ -1,25 +1,32 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-#include "Fixed32.hpp"
-#include "Raycasting.hpp"
+#include "Transform.hpp"
 
-class Hit;
+class Shape;
+
+typedef struct Hit {
+    Vector3 position, normal;
+    fixed32 t;
+    Shape* shape;
+} Hit;
 
 class Shape {
     public:
-        virtual Hit* intersectRay(Ray) = 0;
         Transform transform;
+        Hit virtual intersectRay(fixed32) = 0;
+    protected:
+        Shape(Vector3 position);
 };
 
 class Sphere : public Shape {
     public:
-        Hit* intersectRay(Ray) override;
-        Sphere();
-        Sphere(Vector3 pos);
-        Sphere(fixed32 radius);
-        Sphere(Vector3 pos, fixed32 radius);
         fixed32 radius;
+        Sphere(Vector3 position, fixed32 radius);
+        Sphere(Vector3 position);
+        Sphere(fixed32 radius);
+        Sphere();
+        Hit intersectRay(fixed32) override;
 };
 
 #endif
