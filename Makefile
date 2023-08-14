@@ -37,8 +37,7 @@ CPP                = $(DKPATH)/devkitARM/bin/arm-none-eabi-g++
 CPPFLAGS           = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
 # --- Linker
 LD                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-gcc
-LDFLAGS            = $(SPECS) $(MODEL) -lm
-
+LDFLAGS            = $(SPECS) $(MODEL) -lm -lstdc++
 # --- Object/Executable Packager
 OBJCOPY            = $(DKPATH)/devkitARM/bin/arm-none-eabi-objcopy
 OBJCOPYFLAGS       = -O binary
@@ -94,6 +93,6 @@ $(AUDIOHEADERS) : %.h : %.c
 clean:
 	$(RM) $(ROM_NAME) $(ELF_NAME) $(BIN_NAME)
 	$(RM) $(AUDIOOBJECTS) $(AUDIOHEADERS)
-	$(RM) *.o *.i *.s
+	$(RM) *.o *.i *.ii *.s
 
 audio: $(AUDIOOBJECTS)

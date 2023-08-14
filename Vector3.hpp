@@ -24,6 +24,8 @@ typedef struct Vector3 {
     Vector3 operator/(int);
 
     fixed32 magnitude();
+    Vector3 normalized();
+    fixed32 dot(Vector3 b);
 
 } Vector3;
 

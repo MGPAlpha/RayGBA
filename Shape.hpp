@@ -2,6 +2,7 @@
 #define SHAPE_HPP
 
 #include "Transform.hpp"
+#include "Ray.hpp"
 
 class Shape;
 
@@ -9,12 +10,13 @@ typedef struct Hit {
     Vector3 position, normal;
     fixed32 t;
     Shape* shape;
+    operator bool() const;
 } Hit;
 
 class Shape {
     public:
         Transform transform;
-        Hit virtual intersectRay(fixed32) = 0;
+        Hit virtual intersectRay(Ray) = 0;
     protected:
         Shape(Vector3 position);
 };
@@ -26,7 +28,7 @@ class Sphere : public Shape {
         Sphere(Vector3 position);
         Sphere(fixed32 radius);
         Sphere();
-        Hit intersectRay(fixed32) override;
+        Hit intersectRay(Ray) override;
 };
 
 #endif

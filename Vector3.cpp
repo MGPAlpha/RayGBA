@@ -58,3 +58,12 @@ Vector3 Vector3::operator/(int b) {
 fixed32 Vector3::magnitude() {
     return (x*x + y*y + z*z).sqrt();
 }
+
+Vector3 Vector3::normalized() {
+    fixed32 magnitude = this->magnitude();
+    return Vector3(*this)/magnitude;
+}
+
+fixed32 Vector3::dot(Vector3 b) {
+    return this->x * b.x + this->y * b.y + this->z * b.z;
+}
