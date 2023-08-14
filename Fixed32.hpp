@@ -23,6 +23,18 @@ typedef struct fixed32 {
 
     operator short();
 
+    static struct fixed32 sin(int);
+    static struct fixed32 cos(int);
+    static struct fixed32 tan(int);
+
+    private:
+        static struct fixed32 sinData[360];
+        static struct fixed32 tanData[180];
+        static bool trigDataInitialized;
+        static void initializeTrigData();
+        static void initializeSin();
+        static void initializeTan();
+
 } fixed32;
 
 #endif
