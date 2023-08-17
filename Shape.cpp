@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "Shape.hpp"
+#include "Debug.hpp"
 
 extern "C" {
     #include "print.h"
@@ -40,9 +41,24 @@ Hit Sphere::intersectRay(Ray r) {
     fixed32 b = d.dot(center) * -2;
     fixed32 c = center.dot(center) - this->radius * this->radius;
 
-    fixed32 discrim = b*b - 4*a*c;
+    fixed32 discrim = b*b - (a*4)*c;
+
+    if (debugPrintingEnabled) {
+        // mgba_printf("Direction: (%x, %x, %x)", d.x, d.y, d.z);
+        // mgba_printf("Direction Magnitude: %x", d.magnitude());
+        // mgba_printf("A: %x", a);
+        // mgba_printf("B: %x", b);
+        // mgba_printf("C: %x", c);
+        // mgba_printf("b*b: %x", b*b);
+        // mgba_printf("4a: %x", a*4);
+        // mgba_printf("4ac: %x", (a*4)*c);
+        
+        
+        // mgba_printf("Discrim: %x", discrim);
+    }
     
     Hit result = Hit();
+    result.shape = NULL;
     if (discrim < 0) return result;
 
     fixed32 root = discrim.sqrt();

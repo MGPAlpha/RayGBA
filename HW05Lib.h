@@ -14,7 +14,7 @@ typedef struct rect {
     Vector2 pos;
     Vector2 size;
 } Rect;
-typedef Rect Transform;
+// typedef Rect Transform;
 
 // Common Macros
 #define OFFSET(c, r, rowlen) ((r)*(rowlen)+(c))

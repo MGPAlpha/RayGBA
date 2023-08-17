@@ -96,6 +96,10 @@ fixed32::operator short() {
     return this->value >> 16;
 }
 
+fixed32 fixed32::lerp(fixed32 a, fixed32 b, fixed32 t) {
+    return a + (b-a) * t;
+}
+
 fixed32 fixed32::sin(int theta) {
     if (!trigDataInitialized) {
         initializeTrigData();

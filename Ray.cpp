@@ -2,7 +2,7 @@
 
 Ray::Ray(Vector3 o, Vector3 d) {
     origin = o;
-    direction = d;
+    direction = d.normalized();
 }
 
 Vector3 Ray::evaluateT(fixed32 t) {

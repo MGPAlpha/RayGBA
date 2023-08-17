@@ -27,6 +27,8 @@ typedef struct fixed32 {
     static struct fixed32 cos(int);
     static struct fixed32 tan(int);
 
+    static struct fixed32 lerp(fixed32 a, fixed32 b, fixed32 t);
+
     private:
         static struct fixed32 sinData[360];
         static struct fixed32 tanData[180];

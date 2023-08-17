@@ -27,6 +27,8 @@ typedef struct Vector3 {
     Vector3 normalized();
     fixed32 dot(Vector3 b);
 
+    static Vector3 lerp(Vector3 a, Vector3 b, fixed32 t);
+
 } Vector3;
 
 #endif

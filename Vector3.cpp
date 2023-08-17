@@ -67,3 +67,11 @@ Vector3 Vector3::normalized() {
 fixed32 Vector3::dot(Vector3 b) {
     return this->x * b.x + this->y * b.y + this->z * b.z;
 }
+
+Vector3 Vector3::lerp(Vector3 a, Vector3 b, fixed32 t) {
+    Vector3 result = Vector3();
+    result.x = fixed32::lerp(a.x, b.x, t);
+    result.y = fixed32::lerp(a.y, b.y, t);
+    result.z = fixed32::lerp(a.z, b.z, t);
+    return result;
+}
