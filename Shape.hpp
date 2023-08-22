@@ -1,10 +1,13 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
+class Shape;
+class Material;
+
 #include "Transform.hpp"
 #include "Ray.hpp"
+#include "Material.hpp"
 
-class Shape;
 
 typedef struct Hit {
     Vector3 position, normal;
@@ -16,6 +19,7 @@ typedef struct Hit {
 class Shape {
     public:
         Transform transform;
+        Material* material;
         Hit virtual intersectRay(Ray) = 0;
     protected:
         Shape(Vector3 position);

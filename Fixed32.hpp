@@ -88,6 +88,18 @@ typedef struct fixed32 {
         return result;
     }
 
+    inline bool operator <(const fixed32& b) {
+        return this->value < b.value;
+    }
+    inline bool operator <(const int& b) {
+        return this->value < b<<16;
+    }
+    inline bool operator >(const fixed32& b) {
+        return this->value > b.value;
+    }
+    inline bool operator >(const int& b) {
+        return this->value > b<<16;
+    }
 
     inline struct fixed32 sqrt() {
         fixed32 result;

@@ -2,6 +2,7 @@
 #include "Vector3.hpp"
 #include "Scene.hpp"
 #include "Debug.hpp"
+#include "Material.hpp"
 
 extern "C" {
     #include "HW05Lib.h"
@@ -19,8 +20,21 @@ int main() {
 
 
     Scene sc = Scene();
-    sc.addShape(new Sphere(Vector3(1,0,-4)));
-    sc.addShape(new Sphere(Vector3(0,-2,-4), .5));
+
+    Material* m = new Material();
+    Material* m2 = new Material();
+    m->diffuseColor = Vector3(.5,0,0);
+    m2->diffuseColor = Vector3(0,1,1);
+
+    Shape* s1 = new Sphere(Vector3(1,0,-4));
+    Shape* s2 = new Sphere(Vector3(0,-2,-4), .5);
+
+
+    s1->material = m;
+    s2->material = m2;
+
+    sc.addShape(s1);
+    sc.addShape(s2);
 
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
 
@@ -41,7 +55,7 @@ int main() {
         fixed32 v = fixed32(j)/160;
         for (int i = 0; i < 240; i++) {
 
-            if (i == 0 && j == 0) {
+            if (i == 120 && j == 0) {
                 debugPrintingEnabled = true;
             } else {
                 debugPrintingEnabled = false;
@@ -57,7 +71,14 @@ int main() {
             Ray pixelRay = Ray(Vector3(), rayDir);
             Hit h = sc.generateSceneHit(pixelRay);
             if (h) {
-                setPixel3({i,j}, CYAN);
+                Vector3 shade = h.shape->material->shadeHit(h, sc);
+                unsigned short color = shade.toGBAColor();
+                if (debugPrintingEnabled) {
+
+                    mgba_printf("Vector Color: (%x, %x, %x)", shade.x, shade.y, shade.z);
+                    mgba_printf("Color: %x", color);
+                }
+                setPixel3({i,j}, color);
             } else {
                 setPixel3({i,j}, WHITE);
             }
