@@ -56,6 +56,8 @@ int main() {
             Ray pixelRay = Ray(Vector3(), rayDir);
             Hit h = sc.generateSceneHit(pixelRay);
             if (h) {
+                setPixel3({i,j}, CYAN);
+            } else {
                 setPixel3({i,j}, WHITE);
             }
 

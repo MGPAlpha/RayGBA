@@ -34,7 +34,7 @@ CFLAGS             = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -
 
 # --- C++ Compiler
 CPP                = $(DKPATH)/devkitARM/bin/arm-none-eabi-g++
-CPPFLAGS           = $(MODEL) -O2 -Wall -pedantic -Wextra -std=c99 -save-temps -D_ROM=$(ROM_NAME)
+CPPFLAGS           = $(MODEL) -O2 -Wall -pedantic -Wextra -save-temps -D_ROM=$(ROM_NAME)
 # --- Linker
 LD                 = $(DKPATH)/devkitARM/bin/arm-none-eabi-gcc
 LDFLAGS            = $(SPECS) $(MODEL) -lm -lstdc++
