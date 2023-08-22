@@ -19,7 +19,8 @@ int main() {
 
 
     Scene sc = Scene();
-    sc.addShape(new Sphere(Vector3(0,0,-4)));
+    sc.addShape(new Sphere(Vector3(1,0,-4)));
+    sc.addShape(new Sphere(Vector3(0,-2,-4), .5));
 
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
 
