@@ -88,6 +88,12 @@ typedef struct fixed32 {
         return result;
     }
 
+    inline struct fixed32 operator-() {
+        fixed32 result;
+        result.value = -this->value;
+        return result;
+    }
+
     inline bool operator <(const fixed32& b) {
         return this->value < b.value;
     }

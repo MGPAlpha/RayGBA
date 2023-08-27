@@ -44,17 +44,17 @@ Hit Sphere::intersectRay(Ray r) {
     fixed32 discrim = b*b - (a*4)*c;
 
     if (debugPrintingEnabled) {
-        // mgba_printf("Direction: (%x, %x, %x)", d.x, d.y, d.z);
-        // mgba_printf("Direction Magnitude: %x", d.magnitude());
-        // mgba_printf("A: %x", a);
-        // mgba_printf("B: %x", b);
-        // mgba_printf("C: %x", c);
-        // mgba_printf("b*b: %x", b*b);
-        // mgba_printf("4a: %x", a*4);
-        // mgba_printf("4ac: %x", (a*4)*c);
+        mgba_printf("Direction: (%x, %x, %x)", d.x, d.y, d.z);
+        mgba_printf("Direction Magnitude: %x", d.magnitude());
+        mgba_printf("A: %x", a);
+        mgba_printf("B: %x", b);
+        mgba_printf("C: %x", c);
+        mgba_printf("b*b: %x", b*b);
+        mgba_printf("4a: %x", a*4);
+        mgba_printf("4ac: %x", (a*4)*c);
         
         
-        // mgba_printf("Discrim: %x", discrim);
+        mgba_printf("Discrim: %x", discrim);
     }
     
     Hit result = Hit();
@@ -63,13 +63,32 @@ Hit Sphere::intersectRay(Ray r) {
 
     fixed32 root = discrim.sqrt();
 
-    std::list<fixed32> tOptions = std::list<fixed32>{(-b + root)/(2*a), (-b - root)/(2*a)};
+    fixed32 t1 = (-b + root)/(a*2);
+    fixed32 t2 = (-b - root)/(a*2);
+
+
+    if (debugPrintingEnabled) {
+        mgba_printf("Root: %x", root);
+        mgba_printf("2a: %x", a*2);
+        mgba_printf("-b: %x", -b);
+        mgba_printf("-b+root: %x", -b + root);
+        mgba_printf("-b-root: %x", -b - root);
+        
+        mgba_printf("T1: %x", t1);
+        mgba_printf("T2: %x", t2);
+    }
+
+    std::list<fixed32> tOptions = std::list<fixed32>{t1, t2};
 
     std::remove_if(tOptions.begin(), tOptions.end(), [](fixed32 t) {return t < 0;});
 
     if (tOptions.empty()) return result;
 
     fixed32 finalT = *std::min_element(tOptions.begin(), tOptions.end());
+
+    if (debugPrintingEnabled) {
+        mgba_printf("final T: %x", finalT);
+    }
 
     result.shape = this;
     result.t = finalT;

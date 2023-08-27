@@ -27,7 +27,7 @@ int main() {
     m2->diffuseColor = Vector3(0,1,1);
 
     Shape* s1 = new Sphere(Vector3(1,0,-4));
-    Shape* s2 = new Sphere(Vector3(0,-2,-4), .5);
+    Shape* s2 = new Sphere(Vector3(.5,0,-3.5), .5);
 
 
     s1->material = m;
@@ -55,7 +55,7 @@ int main() {
         fixed32 v = fixed32(j)/160;
         for (int i = 0; i < 240; i++) {
 
-            if (i == 120 && j == 0) {
+            if (i == 170 && j == 80) {
                 debugPrintingEnabled = true;
             } else {
                 debugPrintingEnabled = false;
