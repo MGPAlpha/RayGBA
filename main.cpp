@@ -35,7 +35,7 @@ int main() {
     Shape* s1 = new Sphere(Vector3(1,0,-4));
     Shape* s2 = new Sphere(Vector3(.5,0,-3.5), .6);
 
-    Light* l1 = new DirectionalLight(Vector3(.5, .5, -1));
+    Light* l1 = new DirectionalLight(Vector3(.5, -.5, -1));
 
     s1->material = m;
     s2->material = m2;
@@ -91,7 +91,7 @@ int main() {
 
             Vector3 rayDir = Vector3(
                 fixed32::lerp(lowerAimBound.x, upperAimBound.x, u),
-                fixed32::lerp(lowerAimBound.y, upperAimBound.y, v),
+                fixed32::lerp(upperAimBound.y, lowerAimBound.y, v),
                 -1
             );
 
