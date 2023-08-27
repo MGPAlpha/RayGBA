@@ -3,6 +3,7 @@
 #include "Scene.hpp"
 #include "Debug.hpp"
 #include "Material.hpp"
+#include "Light.hpp"
 
 extern "C" {
     #include "HW05Lib.h"
@@ -21,20 +22,46 @@ int main() {
 
     Scene sc = Scene();
 
+
+    #define SCENE_2
+
+    #ifdef SCENE_1
+
     Material* m = new Material();
     Material* m2 = new Material();
     m->diffuseColor = Vector3(.5,0,0);
     m2->diffuseColor = Vector3(0,1,1);
 
     Shape* s1 = new Sphere(Vector3(1,0,-4));
-    Shape* s2 = new Sphere(Vector3(.5,0,-3.5), .5);
+    Shape* s2 = new Sphere(Vector3(.5,0,-3.5), .6);
 
+    Light* l1 = new DirectionalLight(Vector3(.5, .5, -1));
 
     s1->material = m;
     s2->material = m2;
 
     sc.addShape(s1);
     sc.addShape(s2);
+    sc.addLight(l1);
+    #endif
+    #ifdef SCENE_2
+    Material* m = new Material();
+    m->diffuseColor = Vector3(1);
+
+    Shape* s1 = new Sphere(Vector3(0,0,-4));
+    s1->material = m;
+
+    Light* l1 = new DirectionalLight(Vector3(0, 0, -1));
+    Light* l2 = new DirectionalLight(Vector3(0, 1, -1), Vector3(1,0,0));
+    Light* l3 = new DirectionalLight(Vector3(.5, -.5, -1), Vector3(0,1,0));
+    Light* l4 = new DirectionalLight(Vector3(-.5, -.5, -1), Vector3(0,0,1));
+    
+    sc.addShape(s1);
+    // sc.addLight(l1);
+    sc.addLight(l2);
+    sc.addLight(l3);
+    sc.addLight(l4);
+    #endif
 
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
 

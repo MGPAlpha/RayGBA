@@ -71,6 +71,11 @@ typedef struct Vector3 {
         return result;
     }
 
+    inline struct Vector3 operator-() {
+        Vector3 result = Vector3(-this->x, -this->y, -this->z);
+        return result;
+    }
+
     inline fixed32 magnitude() {
         return (x*x + y*y + z*z).sqrt();
     }

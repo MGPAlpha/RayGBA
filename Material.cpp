@@ -1,7 +1,16 @@
 #include "Material.hpp"
 
 Vector3 Material::shadeHit(Hit h, Scene s) {
-    return this->diffuseColor;
+    std::list<LightContribution>* lightContributions = s.generateLightContributions(h);
+    Vector3 diffuseLight = Vector3();
+    for (LightContribution lc : *lightContributions) {
+        fixed32 dot = h.normal.dot(-lc.direction);
+        dot = (dot < 0) ? fixed32(0) : dot;
+        diffuseLight = diffuseLight + lc.color * dot;
+    }
+    Vector3 diffuse = this->diffuseColor * diffuseLight;
+    delete lightContributions;
+    return diffuse;
 }
 
 Material::Material(Vector3 dColor,
