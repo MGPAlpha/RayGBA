@@ -1,7 +1,7 @@
 #include "Light.hpp"
 
 DirectionalLight::DirectionalLight(Vector3 direction, Vector3 color) {
-    this->direction = direction;
+    this->direction = direction.normalized();
     this->color = color;
 }
 

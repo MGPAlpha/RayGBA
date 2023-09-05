@@ -11,6 +11,7 @@ class Material;
 
 typedef struct Hit {
     Vector3 position, normal;
+    Ray ray;
     fixed32 t;
     Shape* shape;
     operator bool() const;

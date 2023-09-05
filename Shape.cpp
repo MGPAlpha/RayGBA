@@ -94,6 +94,7 @@ Hit Sphere::intersectRay(Ray r) {
     result.t = finalT;
     result.position = r.evaluateT(finalT);
     result.normal = (result.position - this->transform.position).normalized();
+    result.ray = r;
 
     return result;
 }

@@ -7,6 +7,7 @@ typedef struct Ray {
     Vector3 origin;
     Vector3 direction;
     Ray(Vector3 o, Vector3 d);
+    Ray();
     Vector3 evaluateT(fixed32 t);
 } Ray;
 

@@ -99,6 +99,12 @@ typedef struct Vector3 {
 
     inline static Vector3 clampBounds(Vector3 v, Vector3 a, Vector3 b) {
         Vector3 result;
+        if (debugPrintingEnabled) {
+            mgba_printf("Debugging clampBounds():");
+            mgba_printf("v.x > a.x: %x", v.x > a.x);
+            mgba_printf("v.x < b.x: %x", v.x < b.x);
+            mgba_printf("v.x: %x", v.x);
+        }
         result.x = (v.x > a.x) ? ((v.x < b.x) ? v.x : b.x) : a.x;
         result.y = (v.y > a.y) ? ((v.y < b.y) ? v.y : b.y) : a.y;
         result.z = (v.z > a.z) ? ((v.z < b.z) ? v.z : b.z) : a.z;
@@ -106,7 +112,7 @@ typedef struct Vector3 {
     }
 
     inline unsigned short toGBAColor() {
-        Vector3 clamped = this->clampBounds(*this, Vector3(0), Vector3(1));
+        Vector3 clamped = Vector3::clampBounds(*this, Vector3(0), Vector3(1));
 
         const unsigned short colorMask = ~(~0<<5);
 
@@ -118,10 +124,8 @@ typedef struct Vector3 {
         unsigned short b = std::max(std::min(this->z.value>>11, 31), 0); 
 
         if (debugPrintingEnabled) {
-            mgba_printf("Color R: %x", r);
-            mgba_printf("Color G: %x", g);
-            mgba_printf("Color B: %x", b);
-
+            mgba_printf("Color before conversion: (%x, %x, %x)", clamped.x, clamped.y, clamped.z);
+            mgba_printf("Converting to gba color: (%x, %x, %x)", r, g, b);
         }
 
 

@@ -3,7 +3,10 @@
 
 extern "C" {
 #include "fpsqrt/fpsqrt.h"
+#include "print.h"
 }
+
+#include "Debug.hpp"
 
 typedef struct fixed32 {
     int value;
@@ -23,12 +26,12 @@ typedef struct fixed32 {
     // Double conversion from https://stackoverflow.com/a/187823
     inline fixed32 operator=(double val) {
         bool isNegative = val < 0;
-        short whole, frac;
+        int whole, frac;
 
         if (isNegative) val = -val;
 
-        whole = static_cast<short>(val);
-        frac = static_cast<short>(val * (1<<16));
+        whole = static_cast<int>(val);
+        frac = static_cast<int>(val * (1<<16));
         this->value = ((int)whole)<<16 | (frac & 0x0000ffff);
 
         if (isNegative) this->value = -this->value;

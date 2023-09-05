@@ -23,19 +23,19 @@ int main() {
     Scene sc = Scene();
 
 
-    #define SCENE_2
+    #define TEST_SCENE_1
 
     #ifdef SCENE_1
 
     Material* m = new Material();
     Material* m2 = new Material();
-    m->diffuseColor = Vector3(.5,0,0);
-    m2->diffuseColor = Vector3(0,1,1);
+    m->diffuseColor = Vector3(.5);
+    m2->diffuseColor = Vector3(0,.5,.5);
 
     Shape* s1 = new Sphere(Vector3(1,0,-4));
     Shape* s2 = new Sphere(Vector3(.5,0,-3.5), .6);
 
-    Light* l1 = new DirectionalLight(Vector3(.5, -.5, -1));
+    Light* l1 = new DirectionalLight(Vector3(.5, -.5, 0));
 
     s1->material = m;
     s2->material = m2;
@@ -63,6 +63,23 @@ int main() {
     sc.addLight(l4);
     #endif
 
+    #ifdef TEST_SCENE_1
+
+    Material* m = new Material(Vector3(.4, .1, .1), Vector3(.3, 0, 0), Vector3(0), 1, 0);
+
+    Shape* s1 = new Sphere(Vector3(0,0,-4), 1);
+
+    Light* l1 = new DirectionalLight(-Vector3(0, 4, 5), Vector3(1));
+
+    s1->material = m;
+
+
+    sc.addShape(s1);
+    sc.addLight(l1);
+    #endif
+
+    unsigned short bgColor = Vector3(.4, .4, .9).toGBAColor();
+
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
 
     Hit h = sc.generateSceneHit(testRay);
@@ -82,7 +99,7 @@ int main() {
         fixed32 v = fixed32(j)/160;
         for (int i = 0; i < 240; i++) {
 
-            if (i == 170 && j == 80) {
+            if (i == 120 && j == 115) {
                 debugPrintingEnabled = true;
             } else {
                 debugPrintingEnabled = false;
@@ -107,7 +124,7 @@ int main() {
                 }
                 setPixel3({i,j}, color);
             } else {
-                setPixel3({i,j}, WHITE);
+                setPixel3({i,j}, bgColor);
             }
 
             if (debugPrintingEnabled) {
