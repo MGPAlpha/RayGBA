@@ -1,4 +1,9 @@
 #include "Light.hpp"
+#include "Debug.hpp"
+
+extern "C" {
+    #include "print.h"
+}
 
 DirectionalLight::DirectionalLight(Vector3 direction, Vector3 color) {
     this->direction = direction.normalized();
@@ -13,9 +18,15 @@ DirectionalLight::DirectionalLight() : DirectionalLight(Vector3(1)) {
 
 }
 
-LightContribution DirectionalLight::contributeLight(Hit h) {
+LightContribution DirectionalLight::contributeLight(Hit h, Scene* sc) {
     LightContribution result;
-    result.color = color;
+    Ray shadowRay = Ray(h.position, -direction);
+    Hit shadowHit = sc->generateSceneHit(shadowRay, h.shape);
+    if (shadowHit) {
+        result.color = Vector3(0);
+    } else {
+        result.color = color;
+    }
     result.direction = direction.normalized();
     return result;
 }
@@ -33,9 +44,27 @@ PointLight::PointLight() : PointLight(Vector3(1)) {
 
 }
 
-LightContribution PointLight::contributeLight(Hit h) {
+LightContribution PointLight::contributeLight(Hit h, Scene* sc) {
     LightContribution result;
-    result.color = color;
-    result.direction = (h.position - this->position).normalized();
+    Vector3 direction = this->position - h.position;
+    if (debugPrintingEnabled) {
+        mgba_printf("Performing shadow test");
+    }
+    Ray shadowRay = Ray(h.position, direction);
+    Hit shadowHit = sc->generateSceneHit(shadowRay, h.shape, direction.magnitude());
+    if (debugPrintingEnabled) {
+        mgba_printf("Shadow hit info:");
+        mgba_printf("Shadow shape: %x", shadowHit.shape);
+        mgba_printf("Shadow t: %x", shadowHit.t);
+    }
+    if (shadowHit) {
+        result.color = Vector3(0);
+        if (debugPrintingEnabled) {
+            mgba_printf("Applying shadow");
+        }
+    } else {
+        result.color = color;
+    }
+    result.direction = -direction.normalized();
     return result;
 }

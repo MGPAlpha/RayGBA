@@ -2,6 +2,13 @@
 
 Vector3 Material::shadeHit(Hit h, Scene s) {
     std::list<LightContribution>* lightContributions = s.generateLightContributions(h);
+    if (debugPrintingEnabled) {
+        mgba_printf("Light contributions:");
+        for (LightContribution lc : *lightContributions) {
+            mgba_printf("Light direction: (%x, %x, %x)", lc.direction.x, lc.direction.y, lc.direction.z);
+            mgba_printf("Light color: (%x, %x, %x)", lc.color.x, lc.color.y, lc.color.z);
+        }
+    }
     Vector3 diffuseLight = Vector3();
     for (LightContribution lc : *lightContributions) {
         fixed32 dot = h.normal.dot(-lc.direction);

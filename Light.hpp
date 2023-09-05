@@ -10,7 +10,7 @@ struct LightContribution {
 
 class Light {
     public:
-        virtual LightContribution contributeLight(Hit h) = 0;
+        virtual LightContribution contributeLight(Hit h, Scene* sc) = 0;
 };
 
 class DirectionalLight : public Light {
@@ -18,7 +18,7 @@ class DirectionalLight : public Light {
         DirectionalLight(Vector3 direction, Vector3 color);
         DirectionalLight(Vector3 direction);
         DirectionalLight();
-        LightContribution contributeLight(Hit h) override;
+        LightContribution contributeLight(Hit h, Scene* sc) override;
     private:
         Vector3 direction, color;
 };
@@ -28,7 +28,7 @@ class PointLight : public Light {
         PointLight(Vector3 position, Vector3 color);
         PointLight(Vector3 position);
         PointLight();
-        LightContribution contributeLight(Hit h) override;
+        LightContribution contributeLight(Hit h, Scene* sc) override;
     private:
         Vector3 position, color;
 };

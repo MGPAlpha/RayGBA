@@ -45,6 +45,8 @@ int main() {
 
     #define TEST_SCENE_3
 
+    unsigned short bgColor = Vector3(.4, .4, .9).toGBAColor();
+
     #ifdef SCENE_1
 
     Material* m = new Material();
@@ -140,7 +142,47 @@ int main() {
     sc.addLight(l1);
     #endif
 
-    unsigned short bgColor = Vector3(.4, .4, .9).toGBAColor();
+    #ifdef TEST_SCENE_4
+
+    Material* m1 = new Material(Vector3(.8, .8, .8), Vector3(.4), Vector3(.2), 10, 0);
+    Material* m2 = new Material(Vector3(0, .8, .8), Vector3(.4), Vector3(0), 10, 0);
+    Material* m3 = new Material(Vector3(.8, 0, 0), Vector3(.4), Vector3(0), 10, 0);
+    Material* m4 = new Material(Vector3(0, 0, .8), Vector3(.4), Vector3(0), 10, 0);
+    Material* m5 = new Material(Vector3(.8, 0, .8), Vector3(.4), Vector3(0), 10, 0);
+    Material* m6 = new Material(Vector3(0, .8, 0), Vector3(.4), Vector3(0), 10, 0);
+    Material* m7 = new Material(Vector3(.8, .8, 0), Vector3(.4), Vector3(0), 10, 0);
+
+    Shape* s1 = new Sphere(Vector3(0,0,-7), 1);
+    Shape* s2 = new Sphere(Vector3(0,2.5,-7), 1);
+    Shape* s3 = new Sphere(Vector3(0,-2.5,-7), 1);
+    Shape* s4 = new Sphere(Vector3(2.2,1.3,-7), 1);
+    Shape* s5 = new Sphere(Vector3(2.2,-1.3,-7), 1);
+    Shape* s6 = new Sphere(Vector3(-2.2,1.3,-7), 1);
+    Shape* s7 = new Sphere(Vector3(-2.2,-1.3,-7), 1);
+
+    Light* l1 = new PointLight(Vector3(4, 4, 8), Vector3(.7));
+
+    s1->material = m1;
+    s2->material = m2;
+    s3->material = m3;
+    s4->material = m4;
+    s5->material = m5;
+    s6->material = m6;
+    s7->material = m7;
+
+
+    sc.addShape(s1);
+    sc.addShape(s2);
+    sc.addShape(s3);
+    sc.addShape(s4);
+    sc.addShape(s5);
+    sc.addShape(s6);
+    sc.addShape(s7);
+    sc.addLight(l1);
+
+    bgColor = Vector3(.6).toGBAColor();
+    #endif
+
 
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
 
@@ -161,7 +203,7 @@ int main() {
         fixed32 v = fixed32(j)/160;
         for (int i = 0; i < 240; i++) {
 
-            if ((i == 0 || i == 1 || i == 2) && j == 8) {
+            if (i == 150 && j == 80) {
                 debugPrintingEnabled = true;
                 mgba_printf("Drawing pixel (%d, %d)", i, j);
             } else {
