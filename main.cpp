@@ -17,25 +17,45 @@ int main() {
 
     mgba_open();
 
+
+    fixed32 testA = -1.5;
+    fixed32 testB = .5;
+    int aShift = testA.getSafeShiftForMult();
+    int bShift = testB.getSafeShiftForMult();
+    fixed32 testC = testA * testB;
+    Vector3 vecA = Vector3(4);
+    fixed32 testD = vecA.magnitude();
+    Vector3 vecB = vecA.normalized();
+
+    mgba_printf("Test A: %x", testA);
+    mgba_printf("Test B: %x", testB);
+    mgba_printf("A Shift: %x", aShift);
+    mgba_printf("B Shift: %x", bShift);
+    mgba_printf("Test C = AxB: %x", testC);
+
+    mgba_printf("Vec A: (%x, %x, %x)", vecA.x, vecA.y, vecA.z);
+    mgba_printf("Vec A Magnitude: %x", testD);
+    mgba_printf("Vec B: (%x, %x, %x)", vecB.x, vecB.y, vecB.z);
+
     REG_DISPCTL = MODE3 | BG2_ENABLE;
 
 
     Scene sc = Scene();
 
 
-    #define TEST_SCENE_1
+    #define TEST_SCENE_3
 
     #ifdef SCENE_1
 
     Material* m = new Material();
     Material* m2 = new Material();
-    m->diffuseColor = Vector3(.5);
-    m2->diffuseColor = Vector3(0,.5,.5);
+    m->diffuseColor = Vector3(1);
+    m2->diffuseColor = Vector3(0,1,1);
 
     Shape* s1 = new Sphere(Vector3(1,0,-4));
     Shape* s2 = new Sphere(Vector3(.5,0,-3.5), .6);
 
-    Light* l1 = new DirectionalLight(Vector3(.5, -.5, 0));
+    Light* l1 = new DirectionalLight(Vector3(.5, -.5, -.5));
 
     s1->material = m;
     s2->material = m2;
@@ -78,6 +98,48 @@ int main() {
     sc.addLight(l1);
     #endif
 
+    #ifdef TEST_SCENE_2
+
+    Material* m1 = new Material(Vector3(0, .5, 0), Vector3(0), Vector3(0, .2, 0), 1, 0);
+    Material* m2 = new Material(Vector3(.5, 0, 0), Vector3(0), Vector3(.2, 0, 0), 1, 0);
+    Material* m3 = new Material(Vector3(.5, .5, 0), Vector3(0), Vector3(.2, .2, 0), 1, 0);
+
+    Shape* s1 = new Sphere(Vector3(0,0,-5), 1);
+    Shape* s2 = new Sphere(Vector3(1,.6,-4), .33);
+    Shape* s3 = new Sphere(Vector3(1.4,0.9,-3.3), .11);
+
+    Light* l1 = new PointLight(Vector3(5, 5, 5), Vector3(1));
+
+    s1->material = m1;
+    s2->material = m2;
+    s3->material = m3;
+
+
+    sc.addShape(s1);
+    sc.addShape(s2);
+    sc.addShape(s3);
+    sc.addLight(l1);
+    #endif
+
+    #ifdef TEST_SCENE_3
+
+    Material* m1 = new Material(Vector3(0, .5, 0), Vector3(.7), Vector3(0, .2, 0), 20, 0);
+    Material* m2 = new Material(Vector3(.5, 0, 0), Vector3(0), Vector3(.2, 0, 0), 1, 0);
+
+    Shape* s1 = new Sphere(Vector3(0,0,-4), 1);
+    Shape* s2 = new Sphere(Vector3(1,.6,-3), .3);
+
+    Light* l1 = new PointLight(Vector3(7, 7, 5), Vector3(1));
+
+    s1->material = m1;
+    s2->material = m2;
+
+
+    sc.addShape(s1);
+    sc.addShape(s2);
+    sc.addLight(l1);
+    #endif
+
     unsigned short bgColor = Vector3(.4, .4, .9).toGBAColor();
 
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
@@ -99,8 +161,9 @@ int main() {
         fixed32 v = fixed32(j)/160;
         for (int i = 0; i < 240; i++) {
 
-            if (i == 120 && j == 115) {
+            if ((i == 0 || i == 1 || i == 2) && j == 8) {
                 debugPrintingEnabled = true;
+                mgba_printf("Drawing pixel (%d, %d)", i, j);
             } else {
                 debugPrintingEnabled = false;
             }

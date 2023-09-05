@@ -44,6 +44,8 @@ Hit Sphere::intersectRay(Ray r) {
     fixed32 discrim = b*b - (a*4)*c;
 
     if (debugPrintingEnabled) {
+        mgba_printf("Debugging shape with color (%x, %x, %x)", this->material->diffuseColor.x, this->material->diffuseColor.y, this->material->diffuseColor.z);
+        
         mgba_printf("Direction: (%x, %x, %x)", d.x, d.y, d.z);
         mgba_printf("Direction Magnitude: %x", d.magnitude());
         mgba_printf("A: %x", a);

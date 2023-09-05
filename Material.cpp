@@ -17,6 +17,7 @@ Vector3 Material::shadeHit(Hit h, Scene s) {
         Vector3 half = (-(lc.direction + h.ray.direction)).normalized();
         fixed32 specValue = half.dot(h.normal);
         specValue = (specValue < 0) ? fixed32(0) : specValue;
+        specValue = specValue.pow((int)(this->specularCoefficient));
         specularLight = specularLight + lc.color * specValue;
 
         if (debugPrintingEnabled) {

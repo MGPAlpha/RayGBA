@@ -1,6 +1,8 @@
 #ifndef FIXED32_HPP
 #define FIXED32_HPP
 
+#include <cstdint>
+
 extern "C" {
 #include "fpsqrt/fpsqrt.h"
 #include "print.h"
@@ -67,9 +69,26 @@ typedef struct fixed32 {
         return result;
     }
 
+    inline int getSafeShiftForMult() {
+        
+        uint32_t val = this->value;
+        if (this->value < 0) val = -this->value;
+        val = val>>15;
+        for (int i = 0; i < 4; i++) {
+            if (val == 0 || val == (0xffff>>(i*4))) return i * 2;
+            val = val >> 2;
+        }
+        return 8;
+
+    }
+
     inline struct fixed32 operator*(fixed32 b) {
         fixed32 result;
-        result.value = (this->value >> 8) * (b.value >> 8);
+        int requiredShift = 16;
+        int aShift = this->getSafeShiftForMult();
+        int bShift = b.getSafeShiftForMult();
+        result.value = ((this->value >> aShift) * (b.value >> bShift)) >> (requiredShift-aShift-bShift);
+        // result.value = (this->value >> 8) * (this->value >> 8);
         return result;
     }
 
@@ -113,6 +132,15 @@ typedef struct fixed32 {
     inline struct fixed32 sqrt() {
         fixed32 result;
         result.value = sqrt_fx16_16_to_fx16_16((fx16_16_t)this->value);
+        return result;
+    }
+
+    inline fixed32 pow(int b) {
+        fixed32 result;
+        result = 1;
+        for (int i = 0; i < b; i++) {
+            result = result * *this;
+        }
         return result;
     }
 
