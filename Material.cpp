@@ -48,6 +48,6 @@ Material::Material(Vector3 dColor,
     this->reflectiveIndex = rIndex;
 }
 
-Material::Material() : Material(Vector3(.5), Vector3(1), Vector3(), 0, 0) {
+Material::Material() : Material(Vector3(.5), Vector3(), Vector3(), 1, 0) {
 
 }

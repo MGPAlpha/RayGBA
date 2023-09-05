@@ -65,11 +65,11 @@ int main() {
 
     #ifdef TEST_SCENE_1
 
-    Material* m = new Material(Vector3(.4, .1, .1), Vector3(.3, 0, 0), Vector3(0), 1, 0);
+    Material* m = new Material(Vector3(.4, .1, .1), Vector3(0), Vector3(.3, 0, 0), 1, 0);
 
     Shape* s1 = new Sphere(Vector3(0,0,-4), 1);
 
-    Light* l1 = new DirectionalLight(-Vector3(0, 4, 5), Vector3(1));
+    Light* l1 = new PointLight(Vector3(0, 4, 5), Vector3(1));
 
     s1->material = m;
 

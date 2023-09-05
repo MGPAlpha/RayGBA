@@ -94,6 +94,9 @@ Hit Sphere::intersectRay(Ray r) {
     result.t = finalT;
     result.position = r.evaluateT(finalT);
     result.normal = (result.position - this->transform.position).normalized();
+    if (debugPrintingEnabled) {
+        mgba_printf("Normal: (%x, %x, %x)", result.normal.x, result.normal.y, result.normal.z);
+    }
     result.ray = r;
 
     return result;

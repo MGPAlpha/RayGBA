@@ -23,4 +23,14 @@ class DirectionalLight : public Light {
         Vector3 direction, color;
 };
 
+class PointLight : public Light {
+    public:
+        PointLight(Vector3 position, Vector3 color);
+        PointLight(Vector3 position);
+        PointLight();
+        LightContribution contributeLight(Hit h) override;
+    private:
+        Vector3 position, color;
+};
+
 #endif
