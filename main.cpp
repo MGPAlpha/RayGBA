@@ -43,7 +43,7 @@ int main() {
     Scene sc = Scene();
 
 
-    #define TEST_SCENE_3
+    #define SCENE_2
 
     unsigned short bgColor = Vector3(.4, .4, .9).toGBAColor();
 
@@ -183,6 +183,9 @@ int main() {
     bgColor = Vector3(.6).toGBAColor();
     #endif
 
+    unsigned short* renderBuffer = new unsigned short[240*160];
+
+    mgba_printf("Render buffer address: %x", renderBuffer);
 
     Ray testRay = Ray(Vector3(), Vector3(0,0,-1));
 
@@ -227,9 +230,12 @@ int main() {
                     mgba_printf("Vector Color: (%x, %x, %x)", shade.x, shade.y, shade.z);
                     mgba_printf("Color: %x", color);
                 }
-                setPixel3({i,j}, color);
+                renderBuffer[240*j+i] = color;
+                setPixel3({i,j}, color/2);
             } else {
-                setPixel3({i,j}, bgColor);
+
+                renderBuffer[240*j+i] = bgColor;
+                // setPixel3({i,j}, bgColor);
             }
 
             if (debugPrintingEnabled) {
@@ -240,6 +246,10 @@ int main() {
 
         }
     }
+
+    mgba_printf("Background color: %x", bgColor);
+
+    drawFullscreenImage3(renderBuffer);
 
     // mgba_printf("Hit shape address: %x", h.shape);
     // mgba_printf("Hit pos (%x, %x, %x)", h.position.x, h.position.y, h.position.z);
