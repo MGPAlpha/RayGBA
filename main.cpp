@@ -4,6 +4,7 @@
 #include "Debug.hpp"
 #include "Material.hpp"
 #include "Light.hpp"
+#include "RenderTexture.hpp"
 
 extern "C" {
     #include "HW05Lib.h"
@@ -183,7 +184,7 @@ int main() {
     bgColor = Vector3(.6).toGBAColor();
     #endif
 
-    unsigned short* renderBuffer = new unsigned short[240*160];
+    RenderTexture* renderBuffer = new RenderTexture();
 
     mgba_printf("Render buffer address: %x", renderBuffer);
 
@@ -230,12 +231,12 @@ int main() {
                     mgba_printf("Vector Color: (%x, %x, %x)", shade.x, shade.y, shade.z);
                     mgba_printf("Color: %x", color);
                 }
-                renderBuffer[240*j+i] = color;
-                setPixel3({i,j}, color/2);
+                renderBuffer->writePixel(i, j, color);
+                setPixel3({i,j}, (shade/2).toGBAColor());
             } else {
 
-                renderBuffer[240*j+i] = bgColor;
-                // setPixel3({i,j}, bgColor);
+                renderBuffer->writePixel(i, j, bgColor);
+                setPixel3({i,j}, (bgColor/2));
             }
 
             if (debugPrintingEnabled) {
@@ -249,7 +250,7 @@ int main() {
 
     mgba_printf("Background color: %x", bgColor);
 
-    drawFullscreenImage3(renderBuffer);
+    renderBuffer->drawFullscreenUnsafe();
 
     // mgba_printf("Hit shape address: %x", h.shape);
     // mgba_printf("Hit pos (%x, %x, %x)", h.position.x, h.position.y, h.position.z);

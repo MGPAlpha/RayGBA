@@ -134,6 +134,16 @@ typedef struct Vector3 {
         return result;
     }
 
+    inline static Vector3 fromGBAColor(unsigned short color) {
+        fixed32 r;
+        fixed32 g;
+        fixed32 b;
+        r = fixed32(color & 0b11111) / 31;
+        g = fixed32((color & 0b1111100000)>>5) / 31;
+        b = fixed32((color & 0b111110000000000)>>10) / 31;
+        Vector3 result = Vector3(r,g,b);
+    }
+
 } Vector3;
 
 #endif

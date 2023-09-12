@@ -309,7 +309,8 @@ void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned 
 #define DMG_SWEEP_DOWN        (1 << 3)
 #define DMG_SWEEP_STEPTIME(n) (((n) & 7) << 4)
 
-enum {
+
+extern enum {
   REST      = 0,
   NOTE_C2   =44,
   NOTE_CS2  =157,
