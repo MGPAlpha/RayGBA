@@ -1,7 +1,7 @@
 #include "Material.hpp"
 
-Vector3 Material::shadeHit(Hit h, Scene s) {
-    std::list<LightContribution>* lightContributions = s.generateLightContributions(h);
+Vector3 Material::shadeHit(Hit h, Scene* s) {
+    std::list<LightContribution>* lightContributions = s->generateLightContributions(h);
     if (debugPrintingEnabled) {
         mgba_printf("Light contributions:");
         for (LightContribution lc : *lightContributions) {

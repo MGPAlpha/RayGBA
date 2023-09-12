@@ -20,7 +20,7 @@ class Material {
                  Vector3 aColor,
                  fixed32 sCoefficient,
                  fixed32 rIndex);
-        Vector3 shadeHit(Hit h, Scene s);
+        Vector3 shadeHit(Hit h, Scene* s);
         
         
 };

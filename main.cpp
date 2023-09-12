@@ -5,6 +5,8 @@
 #include "Material.hpp"
 #include "Light.hpp"
 #include "RenderTexture.hpp"
+#include "Renderer.hpp"
+#include "DrawUtils3.hpp"
 
 extern "C" {
     #include "HW05Lib.h"
@@ -39,6 +41,7 @@ int main() {
     mgba_printf("Vec B: (%x, %x, %x)", vecB.x, vecB.y, vecB.z);
 
     REG_DISPCTL = MODE3 | BG2_ENABLE;
+    fillScreen3(BLACK);
 
 
     Scene sc = Scene();
@@ -193,64 +196,21 @@ int main() {
     Hit h = sc.generateSceneHit(testRay);
 
     fixed32 fov = 60;
-    fixed32 tanFovOver2 = fixed32::tan(fov/2);
-    Vector3 upperAimBound = Vector3(tanFovOver2*3/2, tanFovOver2, -1);
-    Vector3 lowerAimBound = upperAimBound*-1;
 
-    mgba_printf("Upper Bound: (%x, %x, %x)", upperAimBound.x, upperAimBound.y, upperAimBound.z);
+    DrawUtils3::drawOutlinedRect(ScreenRect(ScreenPoint(30,30),10,10),BLUE, WHITE);
+    DrawUtils3::drawString(ScreenPoint(50,50), "Test", RED);
+    
+    ScreenRect textBox = DrawUtils3::drawTextBoxOneLine(ScreenPoint(60,60), "Test asdfghjkl;", 2, WHITE, BLACK, WHITE);
+    
 
-    lowerAimBound.z = -1;
-
-    for (int j = 0; j < 160; j++) {
-        
-        
-        fixed32 v = fixed32(j)/160;
-        for (int i = 0; i < 240; i++) {
-
-            if (i == 150 && j == 80) {
-                debugPrintingEnabled = true;
-                mgba_printf("Drawing pixel (%d, %d)", i, j);
-            } else {
-                debugPrintingEnabled = false;
-            }
-            fixed32 u = fixed32(i)/240;
-
-            Vector3 rayDir = Vector3(
-                fixed32::lerp(lowerAimBound.x, upperAimBound.x, u),
-                fixed32::lerp(upperAimBound.y, lowerAimBound.y, v),
-                -1
-            );
-
-            Ray pixelRay = Ray(Vector3(), rayDir);
-            Hit h = sc.generateSceneHit(pixelRay);
-            if (h) {
-                Vector3 shade = h.shape->material->shadeHit(h, sc);
-                unsigned short color = shade.toGBAColor();
-                if (debugPrintingEnabled) {
-
-                    mgba_printf("Vector Color: (%x, %x, %x)", shade.x, shade.y, shade.z);
-                    mgba_printf("Color: %x", color);
-                }
-                renderBuffer->writePixel(i, j, color);
-                setPixel3({i,j}, (shade/2).toGBAColor());
-            } else {
-
-                renderBuffer->writePixel(i, j, bgColor);
-                setPixel3({i,j}, (bgColor/2));
-            }
-
-            if (debugPrintingEnabled) {
-                mgba_printf("Hit Details:");
-                mgba_printf("Hit Address: %x", h.shape);
-                mgba_printf("Hit Position: (%x, %x, %x)", h.position.x, h.position.y, h.position.z);
-            }
-
-        }
-    }
-
-    mgba_printf("Background color: %x", bgColor);
+    Renderer::render(renderBuffer, &sc, Vector3(4,0,-4), 40, CoordinateFrame(Vector3(0,0,-1), Vector3(0,1,0), Vector3(1,0,0)),
+        [textBox](unsigned short i, unsigned short j, unsigned short color){
+            if (textBox.isPointInside(ScreenPoint(i,j))) return;
+            setPixel3({i,j}, color);
+    });
 
     renderBuffer->drawFullscreenUnsafe();
+
 
     // mgba_printf("Hit shape address: %x", h.shape);
     // mgba_printf("Hit pos (%x, %x, %x)", h.position.x, h.position.y, h.position.z);
