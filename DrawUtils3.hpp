@@ -27,9 +27,9 @@ class DrawUtils3 {
         static void drawOutlinedRect(ScreenRect r, unsigned short color, unsigned short outlineColor);
 
         static void drawChar(ScreenPoint pos, char ch, unsigned short color);
-        static void drawString(ScreenPoint pos, char *str, unsigned short color);
+        static void drawString(ScreenPoint pos, const char *str, unsigned short color);
 
-        static ScreenRect drawTextBoxOneLine(ScreenPoint pos, char *str, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline);
+        static ScreenRect drawTextBoxOneLine(ScreenPoint pos, const char *str, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline);
 };
 
 #endif

@@ -85,7 +85,7 @@ void DrawUtils3::drawChar(ScreenPoint pos, char ch, unsigned short color) {
 }
 
 // Draws the specified string at the specified location in Mode 3
-void DrawUtils3::drawString(ScreenPoint pos, char *str, unsigned short color) {
+void DrawUtils3::drawString(ScreenPoint pos, const char *str, unsigned short color) {
 
     // Until the null character appears
     while(*str != '\0') {
@@ -98,7 +98,7 @@ void DrawUtils3::drawString(ScreenPoint pos, char *str, unsigned short color) {
     }
 }
 
-ScreenRect DrawUtils3::drawTextBoxOneLine(ScreenPoint pos, char *str, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline) {
+ScreenRect DrawUtils3::drawTextBoxOneLine(ScreenPoint pos, const char *str, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline) {
     unsigned short height = 8;
     unsigned short width = strlen(str) * 6;
     width += padding*2;

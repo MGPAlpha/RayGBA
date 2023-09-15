@@ -8,7 +8,7 @@ RenderTexture::RenderTexture(unsigned short width, unsigned short height, RTFilt
     this->width = width;
     this->height = height;
     this->filterMode = filterMode;
-    this->buffer = new unsigned short[width*height];
+    this->buffer = new unsigned short[width*height]();
 }
 
 RenderTexture::RenderTexture(unsigned short width, unsigned short height) : RenderTexture(width, height, RTFilterMode::Point) {

@@ -15,6 +15,8 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
 
     lowerAimBound.z = -1;
 
+    unsigned short bgColor = sc->bgColor.toGBAColor();
+
     for (int j = 0; j < height; j++) {
         
         
@@ -40,7 +42,6 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
             Ray pixelRay = Ray(position, rayDir);
             Hit h = sc->generateSceneHit(pixelRay);
             unsigned short color;
-            unsigned short bgColor = Vector3(.4, .4, .9).toGBAColor();
             if (h) {
                 Vector3 shade = h.shape->material->shadeHit(h, sc);
                 color = shade.toGBAColor();

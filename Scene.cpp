@@ -1,7 +1,9 @@
 #include "Scene.hpp"
 
-Scene::Scene() {
+using namespace std;
 
+Scene::Scene(std::string name) {
+    this->name = name;
 }
 
 void Scene::addShape(Shape* s) {
@@ -39,4 +41,8 @@ std::list<LightContribution>* Scene::generateLightContributions(Hit h) {
         contributions->push_back(l->contributeLight(h, this));
     }
     return contributions;
+}
+
+string Scene::getName() {
+    return this->name;
 }
