@@ -84,11 +84,11 @@ typedef struct fixed32 {
 
     inline struct fixed32 operator*(fixed32 b) {
         fixed32 result;
-        int requiredShift = 16;
-        int aShift = this->getSafeShiftForMult();
-        int bShift = b.getSafeShiftForMult();
-        result.value = ((this->value >> aShift) * (b.value >> bShift)) >> (requiredShift-aShift-bShift);
-        // result.value = (this->value >> 8) * (this->value >> 8);
+        // int requiredShift = 16;
+        // int aShift = this->getSafeShiftForMult();
+        // int bShift = b.getSafeShiftForMult();
+        // result.value = ((this->value >> aShift) * (b.value >> bShift)) >> (requiredShift-aShift-bShift);
+        result.value = (this->value >> 8) * (b.value >> 8);
         return result;
     }
 
