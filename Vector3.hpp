@@ -89,6 +89,10 @@ typedef struct Vector3 {
         return this->x * b.x + this->y * b.y + this->z * b.z;
     }
 
+    inline operator bool() {
+        return (this->x || this->y || this->z);
+    }
+
     static inline struct Vector3 lerp(Vector3 a, Vector3 b, fixed32 t) {
         Vector3 result = Vector3();
         result.x = fixed32::lerp(a.x, b.x, t);

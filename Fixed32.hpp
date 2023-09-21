@@ -153,6 +153,14 @@ typedef struct fixed32 {
         return this->value >> 16;
     }
 
+    inline operator int() {
+        return (short)*this;
+    }
+
+    inline operator bool() {
+        return (bool)this->value;
+    }
+
     static struct fixed32 sin(int);
     static struct fixed32 cos(int);
     static struct fixed32 tan(int);
