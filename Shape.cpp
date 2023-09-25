@@ -113,7 +113,7 @@ Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3) {
     this->v1 = v1;
     this->v2 = v2;
     this->v3 = v3;
-    this->normal = (v2-v1).cross(v3-v1).normalized();
+    this->normal = (v2-v1).normalized().cross((v3-v1).normalized()).normalized();
 }
 
 Triangle::Triangle() : Triangle(Vector3(0,1,0), Vector3(1,-1,0), Vector3(-1,-1,0)) {

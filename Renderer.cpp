@@ -23,7 +23,7 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
         fixed32 v = fixed32(j)/height;
         for (int i = 0; i < width; i++) {
 
-            if (i == 120 && j == 80) {
+            if (i == 120 && j == 130) {
                 debugPrintingEnabled = true;
                 mgba_printf("Drawing pixel (%d, %d)", i, j);
             } else {

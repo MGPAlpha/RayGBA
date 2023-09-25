@@ -286,7 +286,35 @@ int main() {
         sc8.addLight(l);
     }
 
-    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8};
+    Scene sc9 = Scene("Colorful Shadows");
+
+    {
+        sc9.bgColor = Vector3(.2,.2,1);
+
+        Light* l1 = new PointLight(Vector3(3,4,0), Vector3(.8,.2,.2));
+        Light* l2 = new PointLight(Vector3(-3,4,0), Vector3(.2,.8,.2));
+        Light* l3 = new PointLight(Vector3(0,4,-5), Vector3(.2,.2,.8));
+
+        sc9.addLight(l1);
+        sc9.addLight(l2);
+        sc9.addLight(l3);
+        
+        Material* triMat = new Material(Vector3(.8), Vector3(0), Vector3(.2), 1, 0);
+        Triangle* tri1 = new Triangle(Vector3(-100,-1,-100), Vector3(100,-1,-100), Vector3(100,-1,100));
+        Triangle* tri2 = new Triangle(Vector3(100,-1,100), Vector3(-100,-1,100), Vector3(-100,-1,-100));
+        tri1->material = triMat;
+        tri2->material = triMat;
+        sc9.addShape(tri1);
+        sc9.addShape(tri2);
+
+        Material* sphMat = new Material(Vector3(.8), Vector3(0), Vector3(.2), 1, 0);
+        Sphere* sph = new Sphere(Vector3(0, 0.5, -3));
+        sph->material = sphMat;
+
+        sc9.addShape(sph);
+    }
+
+    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9};
 
     RenderTexture* renderBuffer = new RenderTexture();
 
