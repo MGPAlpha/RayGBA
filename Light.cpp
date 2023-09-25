@@ -50,17 +50,21 @@ LightContribution PointLight::contributeLight(Hit h, Scene* sc) {
     if (debugPrintingEnabled) {
         mgba_printf("Performing shadow test");
     }
-    Ray shadowRay = Ray(h.position, direction);
-    Hit shadowHit = sc->generateSceneHit(shadowRay, h.shape, direction.magnitude());
-    if (debugPrintingEnabled) {
-        mgba_printf("Shadow hit info:");
-        mgba_printf("Shadow shape: %x", shadowHit.shape);
-        mgba_printf("Shadow t: %x", shadowHit.t);
-    }
-    if (shadowHit) {
-        result.color = Vector3(0);
+    if (h.shape->material->recieveShadows) {
+        Ray shadowRay = Ray(h.position, direction);
+        Hit shadowHit = sc->generateSceneHit(shadowRay, h.shape, direction.magnitude());
         if (debugPrintingEnabled) {
-            mgba_printf("Applying shadow");
+            mgba_printf("Shadow hit info:");
+            mgba_printf("Shadow shape: %x", shadowHit.shape);
+            mgba_printf("Shadow t: %x", shadowHit.t);
+        }
+        if (shadowHit) {
+            result.color = Vector3(0);
+            if (debugPrintingEnabled) {
+                mgba_printf("Applying shadow");
+            }
+        } else {
+            result.color = color;
         }
     } else {
         result.color = color;

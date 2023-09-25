@@ -1,0 +1,42 @@
+Regex: begin\nvertex ([\d\.\-]+) ([\d\.\-]+) ([\d\.\-]+)\nvertex ([\d\.\-]+) ([\d\.\-]+) ([\d\.\-]+)\nvertex ([\d\.\-]+) ([\d\.\-]+) ([\d\.\-]+)\nend
+Replacement: Triangle* t1 = new Triangle(Vector3($1, $2, $3), Vector3($4, $5, $6), Vector3($7, $8, $9));
+
+Triangle* t1 = new Triangle(Vector3(0.525731, 0.850651, -3), Vector3(0.850651, 0, -3.525731), Vector3(0.850651, 0, -2.474269));
+
+Triangle* t1 = new Triangle(Vector3(0.850651, 0, -3.525731), Vector3(0.525731, -0.850651, -3), Vector3(0.850651, 0, -2.474269));
+
+Triangle* t1 = new Triangle(Vector3(-0.525731, 0.850651, -3), Vector3(-0.850651, 0, -2.474269), Vector3(-0.850651, 0, -3.525731));
+
+Triangle* t1 = new Triangle(Vector3(-0.525731, -0.850651, -3), Vector3(-0.850651, 0, -3.525731), Vector3(-0.850651, 0, -2.474269));
+
+Triangle* t1 = new Triangle(Vector3(0, 0.525731, -2.149349), Vector3(-0.525731, 0.850651, -3), Vector3(0.525731, 0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(0, 0.525731, -3.850651), Vector3(0.525731, 0.850651, -3), Vector3(-0.525731, 0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(0.850651, 0, -3.525731), Vector3(0, 0.525731, -3.850651), Vector3(0, -0.525731, -3.850651));
+
+Triangle* t1 = new Triangle(Vector3(-0.850651, 0, -3.525731), Vector3(0, -0.525731, -3.850651), Vector3(0, 0.525731, -3.850651));
+
+Triangle* t1 = new Triangle(Vector3(0, -0.525731, -3.850651), Vector3(-0.525731, -0.850651, -3), Vector3(0.525731, -0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(0, -0.525731, -2.149349), Vector3(0.525731, -0.850651, -3), Vector3(-0.525731, -0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(0.850651, 0, -2.474269), Vector3(0, -0.525731, -2.149349), Vector3(0, 0.525731, -2.149349));
+
+Triangle* t1 = new Triangle(Vector3(-0.850651, 0, -2.474269), Vector3(0, 0.525731, -2.149349), Vector3(0, -0.525731, -2.149349));
+
+Triangle* t1 = new Triangle(Vector3(0, 0.525731, -3.850651), Vector3(0.850651, 0, -3.525731), Vector3(0.525731, 0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(0, 0.525731, -2.149349), Vector3(0.525731, 0.850651, -3), Vector3(0.850651, 0, -2.474269));
+
+Triangle* t1 = new Triangle(Vector3(0, 0.525731, -3.850651), Vector3(-0.525731, 0.850651, -3), Vector3(-0.850651, 0, -3.525731));
+
+Triangle* t1 = new Triangle(Vector3(0, 0.525731, -2.149349), Vector3(-0.850651, 0, -2.474269), Vector3(-0.525731, 0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(0, -0.525731, -3.850651), Vector3(0.525731, -0.850651, -3), Vector3(0.850651, 0, -3.525731));
+
+Triangle* t1 = new Triangle(Vector3(0, -0.525731, -2.149349), Vector3(0.850651, 0, -2.474269), Vector3(0.525731, -0.850651, -3));
+
+Triangle* t1 = new Triangle(Vector3(-0.525731, -0.850651, -3), Vector3(0, -0.525731, -3.850651), Vector3(-0.850651, 0, -3.525731));
+
+Triangle* t1 = new Triangle(Vector3(0, -0.525731, -2.149349), Vector3(-0.525731, -0.850651, -3), Vector3(-0.850651, 0, -2.474269));

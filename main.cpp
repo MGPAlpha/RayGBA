@@ -200,14 +200,93 @@ int main() {
         m->diffuseColor = Vector3(.9,.2,.2);
         Shape* tri = new Triangle(Vector3(-1, -1, -4), Vector3(1, -1, -4), Vector3(0,1,-4));
         tri->material = m;
-        Light* l = new DirectionalLight(Vector3(0,4,5), Vector3(1));
+        Light* l = new PointLight(Vector3(0,4,5), Vector3(1));
 
         sc7.addLight(l);
         sc7.addShape(tri);
 
     }
 
-    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7};
+    Scene sc8 = Scene("Tris and Icosa");
+
+    {
+        Material* triMat = new Material(Vector3(.8), Vector3(.4), Vector3(.2), 1, 0);
+
+        Triangle* t1 = new Triangle(Vector3(0.525731, 0.850651, -3), Vector3(0.850651, 0, -3.525731), Vector3(0.850651, 0, -2.474269));
+        Triangle* t2 = new Triangle(Vector3(0.850651, 0, -3.525731), Vector3(0.525731, -0.850651, -3), Vector3(0.850651, 0, -2.474269));
+        Triangle* t3 = new Triangle(Vector3(-0.525731, 0.850651, -3), Vector3(-0.850651, 0, -2.474269), Vector3(-0.850651, 0, -3.525731));
+        Triangle* t4 = new Triangle(Vector3(-0.525731, -0.850651, -3), Vector3(-0.850651, 0, -3.525731), Vector3(-0.850651, 0, -2.474269));
+        Triangle* t5 = new Triangle(Vector3(0, 0.525731, -2.149349), Vector3(-0.525731, 0.850651, -3), Vector3(0.525731, 0.850651, -3));
+        Triangle* t6 = new Triangle(Vector3(0, 0.525731, -3.850651), Vector3(0.525731, 0.850651, -3), Vector3(-0.525731, 0.850651, -3));
+        Triangle* t7 = new Triangle(Vector3(0.850651, 0, -3.525731), Vector3(0, 0.525731, -3.850651), Vector3(0, -0.525731, -3.850651));
+        Triangle* t8 = new Triangle(Vector3(-0.850651, 0, -3.525731), Vector3(0, -0.525731, -3.850651), Vector3(0, 0.525731, -3.850651));
+        Triangle* t9 = new Triangle(Vector3(0, -0.525731, -3.850651), Vector3(-0.525731, -0.850651, -3), Vector3(0.525731, -0.850651, -3));
+        Triangle* t10 = new Triangle(Vector3(0, -0.525731, -2.149349), Vector3(0.525731, -0.850651, -3), Vector3(-0.525731, -0.850651, -3));
+        Triangle* t11 = new Triangle(Vector3(0.850651, 0, -2.474269), Vector3(0, -0.525731, -2.149349), Vector3(0, 0.525731, -2.149349));
+        Triangle* t12 = new Triangle(Vector3(-0.850651, 0, -2.474269), Vector3(0, 0.525731, -2.149349), Vector3(0, -0.525731, -2.149349));
+        Triangle* t13 = new Triangle(Vector3(0, 0.525731, -3.850651), Vector3(0.850651, 0, -3.525731), Vector3(0.525731, 0.850651, -3));
+        Triangle* t14 = new Triangle(Vector3(0, 0.525731, -2.149349), Vector3(0.525731, 0.850651, -3), Vector3(0.850651, 0, -2.474269));
+        Triangle* t15 = new Triangle(Vector3(0, 0.525731, -3.850651), Vector3(-0.525731, 0.850651, -3), Vector3(-0.850651, 0, -3.525731));
+        Triangle* t16 = new Triangle(Vector3(0, 0.525731, -2.149349), Vector3(-0.850651, 0, -2.474269), Vector3(-0.525731, 0.850651, -3));
+        Triangle* t17 = new Triangle(Vector3(0, -0.525731, -3.850651), Vector3(0.525731, -0.850651, -3), Vector3(0.850651, 0, -3.525731));
+        Triangle* t18 = new Triangle(Vector3(0, -0.525731, -2.149349), Vector3(0.850651, 0, -2.474269), Vector3(0.525731, -0.850651, -3));
+        Triangle* t19 = new Triangle(Vector3(-0.525731, -0.850651, -3), Vector3(0, -0.525731, -3.850651), Vector3(-0.850651, 0, -3.525731));
+        Triangle* t20 = new Triangle(Vector3(0, -0.525731, -2.149349), Vector3(-0.525731, -0.850651, -3), Vector3(-0.850651, 0, -2.474269));
+
+        t1->material = triMat;
+        t2->material = triMat;
+        t3->material = triMat;
+        t4->material = triMat;
+        t5->material = triMat;
+        t6->material = triMat;
+        t7->material = triMat;
+        t8->material = triMat;
+        t9->material = triMat;
+        t10->material = triMat;
+        t11->material = triMat;
+        t12->material = triMat;
+        t13->material = triMat;
+        t14->material = triMat;
+        t15->material = triMat;
+        t16->material = triMat;
+        t17->material = triMat;
+        t18->material = triMat;
+        t19->material = triMat;
+        t20->material = triMat;
+
+        sc8.addShape(t1);
+        sc8.addShape(t2);
+        sc8.addShape(t3);
+        sc8.addShape(t4);
+        sc8.addShape(t5);
+        sc8.addShape(t6);
+        sc8.addShape(t7);
+        sc8.addShape(t8);
+        sc8.addShape(t9);
+        sc8.addShape(t10);
+        sc8.addShape(t11);
+        sc8.addShape(t12);
+        sc8.addShape(t13);
+        sc8.addShape(t14);
+        sc8.addShape(t15);
+        sc8.addShape(t16);
+        sc8.addShape(t17);
+        sc8.addShape(t18);
+        sc8.addShape(t19);
+        sc8.addShape(t20);
+
+        Sphere* sph = new Sphere(Vector3(0,0,-3), .85);
+        Material* sphMat = new Material(Vector3(.8,.2,.8), Vector3(0), Vector3(.3,.1,.3), 1, 0);
+        sphMat->recieveShadows = false;
+        triMat->recieveShadows = false;
+        sph->material = sphMat;
+        sc8.addShape(sph);
+
+        Light* l = new PointLight(Vector3(4,4,8), Vector3(.7));
+        sc8.addLight(l);
+    }
+
+    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8};
 
     RenderTexture* renderBuffer = new RenderTexture();
 

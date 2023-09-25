@@ -50,12 +50,22 @@ Material::Material(Vector3 dColor,
                  Vector3 sColor,
                  Vector3 aColor,
                  fixed32 sCoefficient,
-                 fixed32 rIndex) {
+                 fixed32 rIndex,
+                 bool recieveShadows) {
     this->diffuseColor = dColor;
     this->spectralColor = sColor;
     this->ambientColor = aColor;
     this->specularCoefficient = sCoefficient;
     this->reflectiveIndex = rIndex;
+    this->recieveShadows = recieveShadows;
+}
+
+Material::Material(Vector3 dColor,
+                 Vector3 sColor,
+                 Vector3 aColor,
+                 fixed32 sCoefficient,
+                 fixed32 rIndex) : Material(dColor, sColor, aColor, sCoefficient, rIndex, true) {
+    
 }
 
 Material::Material() : Material(Vector3(.5), Vector3(0), Vector3(0), 1, 0) {

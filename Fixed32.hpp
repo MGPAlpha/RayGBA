@@ -101,7 +101,9 @@ typedef struct fixed32 {
 
     inline struct fixed32 operator/(fixed32 b) {
         fixed32 result;
-        result.value = (this->value / (b.value >> 8)) << 8;
+        long long divisor = ((long long)this->value) << 16;
+
+        result.value = (divisor / (b.value));
         return result;
     }
 

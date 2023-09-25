@@ -14,7 +14,14 @@ class Material {
     public:
         Vector3 diffuseColor, spectralColor, ambientColor;
         fixed32 specularCoefficient, reflectiveIndex;
+        bool recieveShadows;
         Material();
+        Material(Vector3 dColor,
+                 Vector3 sColor,
+                 Vector3 aColor,
+                 fixed32 sCoefficient,
+                 fixed32 rIndex,
+                 bool recieveShadows);
         Material(Vector3 dColor,
                  Vector3 sColor,
                  Vector3 aColor,

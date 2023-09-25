@@ -168,7 +168,7 @@ Hit Triangle::intersectRay(Ray r) {
     result.position = intersection;
     result.t = t;
     result.ray = r;
-    if (this->normal.dot(r.direction) > 0) {
+    if (this->normal.dot(r.direction) < 0) {
         result.normal = this->normal;
     } else {
         result.normal = -this->normal;
