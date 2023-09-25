@@ -8,15 +8,20 @@ extern "C" {
     #include "print.h"
 }
 
+
+Hit::Hit(Shape*s) {
+    this->shape = s;
+}
+Hit::Hit() : Hit(nullptr) {
+
+}
+
 Hit::operator bool() const {
     return this->shape;
 }
 
-Shape::Shape(Vector3 position) {
-    transform = Transform(position);
-}
-
-Sphere::Sphere(Vector3 position, fixed32 radius) : Shape(position) {
+Sphere::Sphere(Vector3 position, fixed32 radius) {
+    this->transform = Transform(position);
     this->radius = radius;
 }
 
@@ -101,5 +106,72 @@ Hit Sphere::intersectRay(Ray r) {
     }
     result.ray = r;
 
+    return result;
+}
+
+Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3) {
+    this->v1 = v1;
+    this->v2 = v2;
+    this->v3 = v3;
+    this->normal = (v2-v1).cross(v3-v1).normalized();
+}
+
+Triangle::Triangle() : Triangle(Vector3(0,1,0), Vector3(1,-1,0), Vector3(-1,-1,0)) {
+
+}
+
+
+Hit Triangle::intersectRay(Ray r) {
+    Vector3 v1 = this->v1;
+    Vector3 v2 = this->v2;
+    Vector3 v3 = this->v3;
+
+    Vector3 u = v1-r.origin;
+
+    if (debugPrintingEnabled) {
+        mgba_printf("U: (%x, %x, %x)", u.x, u.y, u.z);
+        mgba_printf("Normal: (%x, %x, %x)", normal.x, normal.y, normal.z);
+        mgba_printf("Ray dir: (%x, %x, %x)", r.direction.x, r.direction.y, r.direction.z);
+    }
+
+    if ((this->normal.dot(r.direction)) == 0) {
+        return Hit();
+    }
+
+    fixed32 t = this->normal.dot(u) / this->normal.dot(r.direction);
+    Vector3 intersection = r.evaluateT(t);
+
+    if (debugPrintingEnabled) {
+        mgba_printf("T: %x", t);
+        mgba_printf("Intersection: (%x, %x, %x)", intersection.x, intersection.y, intersection.z);
+    }
+
+    fixed32 areaABC = this->normal.dot((v1-v2).cross(v3-v1));
+    fixed32 areaPBC = this->normal.dot((v2-intersection).cross(v3-intersection));
+    fixed32 areaPCA = this->normal.dot((v3-intersection).cross(v1-intersection));
+    fixed32 areaPAB = this->normal.dot((v1-intersection).cross(v2-intersection));
+
+    Vector3 bary;
+    bary.x = areaPBC/areaABC;
+    bary.y = areaPCA/areaABC;
+    bary.z = areaPAB/areaABC;
+
+    if (debugPrintingEnabled) {
+        mgba_printf("Bary: (%x, %x, %x)", bary.x, bary.y, bary.z);
+    }
+
+    if (!((bary.x <= 0 && bary.y <= 0 && bary.z <= 0) || (bary.x >= 0 && bary.y >= 0 && bary.z >= 0))) {
+        return Hit();
+    }
+
+    Hit result = Hit(this);
+    result.position = intersection;
+    result.t = t;
+    result.ray = r;
+    if (this->normal.dot(r.direction) > 0) {
+        result.normal = this->normal;
+    } else {
+        result.normal = -this->normal;
+    }
     return result;
 }

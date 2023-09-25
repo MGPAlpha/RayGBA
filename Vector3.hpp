@@ -89,6 +89,14 @@ typedef struct Vector3 {
         return this->x * b.x + this->y * b.y + this->z * b.z;
     }
 
+    inline Vector3 cross(Vector3 b) {
+        Vector3 result;
+        result.x = this->y * b.z - this->z * b.y;
+        result.y = this->z * b.x - this->x * b.z;
+        result.z = this->x * b.y - this->y * b.x;
+        return result;
+    }
+
     inline operator bool() {
         return (this->x || this->y || this->z);
     }

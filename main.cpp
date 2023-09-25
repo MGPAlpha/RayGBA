@@ -193,7 +193,21 @@ int main() {
 
     }
 
-    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6};
+    Scene sc7 = Scene("One Triangle");
+
+    {
+        Material* m = new Material();
+        m->diffuseColor = Vector3(.9,.2,.2);
+        Shape* tri = new Triangle(Vector3(-1, -1, -4), Vector3(1, -1, -4), Vector3(0,1,-4));
+        tri->material = m;
+        Light* l = new DirectionalLight(Vector3(0,4,5), Vector3(1));
+
+        sc7.addLight(l);
+        sc7.addShape(tri);
+
+    }
+
+    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7};
 
     RenderTexture* renderBuffer = new RenderTexture();
 
