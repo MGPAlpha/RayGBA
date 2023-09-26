@@ -1,6 +1,6 @@
 #include "Material.hpp"
 
-Vector3 Material::shadeHit(Hit h, Scene* s) {
+Vector3 Material::shadeHit(Hit h, Scene* s, uint reflLimit) {
     std::list<LightContribution>* lightContributions = s->generateLightContributions(h);
     if (debugPrintingEnabled) {
         mgba_printf("Light contributions:");
@@ -41,6 +41,24 @@ Vector3 Material::shadeHit(Hit h, Scene* s) {
         }
         totalColor = totalColor + this->spectralColor * specularLight;
     }
+    if (this->reflectiveIndex > 0 && reflLimit > 0) {
+        Vector3 rayDir = h.ray.direction;
+        Vector3 reflDir = rayDir + h.normal * 2;
+
+        Ray reflRay = Ray(h.position, reflDir);
+
+        Hit reflHit = s->generateSceneHit(reflRay, h.shape);
+
+        Vector3 reflColor;
+
+        if (reflHit) {
+            reflColor = reflHit.shape->material->shadeHit(reflHit, s, reflLimit-1);
+        } else {
+            reflColor = s->bgColor;
+        }
+
+        totalColor = totalColor + reflColor * this->reflectiveIndex;
+    }
     totalColor = totalColor + this->ambientColor;
     delete lightContributions;
     return totalColor;
@@ -70,4 +88,8 @@ Material::Material(Vector3 dColor,
 
 Material::Material() : Material(Vector3(.5), Vector3(0), Vector3(0), 1, 0) {
 
+}
+
+Vector3 Material::shadeHit(Hit h, Scene* s) {
+    return shadeHit(h, s, 5);
 }

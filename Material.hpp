@@ -27,6 +27,7 @@ class Material {
                  Vector3 aColor,
                  fixed32 sCoefficient,
                  fixed32 rIndex);
+        Vector3 shadeHit(Hit h, Scene* s, uint reflLimit);
         Vector3 shadeHit(Hit h, Scene* s);
         
         

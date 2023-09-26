@@ -314,7 +314,29 @@ int main() {
         sc9.addShape(sph);
     }
 
-    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9};
+    Scene sc10 = Scene("Reflective Sphere");
+
+    {
+        Material* reflMat = new Material(Vector3(.5,0,0), Vector3(.7), Vector3(.2,0,0), 20, .7);
+        Material* diffuseMat = new Material(Vector3(0,.5,0), Vector3(0), Vector3(0,.2,0), 1, 0);
+
+        Sphere* bigSph = new Sphere(Vector3(0,0,-4));
+        Sphere* smallSph = new Sphere(Vector3(1,.6,-3), .3);
+
+        Light* l = new PointLight(Vector3(-5,2,5), Vector3(1));
+
+        bigSph->material = reflMat;
+        smallSph->material = diffuseMat;
+
+        sc10.addShape(bigSph);
+        sc10.addShape(smallSph);
+
+        sc10.addLight(l);
+
+        sc10.bgColor = Vector3(.2, .2, .5);
+    }
+
+    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9, &sc10};
 
     RenderTexture* renderBuffer = new RenderTexture();
 
