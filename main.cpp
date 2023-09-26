@@ -336,7 +336,73 @@ int main() {
         sc10.bgColor = Vector3(.2, .2, .5);
     }
 
-    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9, &sc10};
+    Scene sc11 = Scene("Mirror spheres");
+
+    {
+        Light* l1 = new PointLight(Vector3(8,8,3), Vector3(.7));
+        Light* l2 = new PointLight(Vector3(-4,2,0), Vector3(.7));
+
+        Material* floorMat = new Material(Vector3(.8), Vector3(0), Vector3(.2), 1, 0);
+        Material* mirrorMat = new Material(Vector3(.6), Vector3(.7), Vector3(.2), 20, .7);
+
+        Triangle* floor1 = new Triangle(Vector3(-100,-.6,-100), Vector3(100,-.6,-100), Vector3(100,-.6,100));
+        Triangle* floor2 = new Triangle(Vector3(100,-.6,100), Vector3(-100,-.6,100), Vector3(-100,-.6,-100));
+        floor1->material = floorMat;
+        floor2->material = floorMat;
+
+        Sphere* sph1 = new Sphere(Vector3(.8,.2,-7), .8);
+        Sphere* sph2 = new Sphere(Vector3(-.8,.2,-7), .8);
+        Sphere* sph3 = new Sphere(Vector3(0,-.2,-5.5), .4);
+        Sphere* sph4 = new Sphere(Vector3(1,-.2,-4), .4);
+        Sphere* sph5 = new Sphere(Vector3(-1,-.2,-4), .4);
+        sph1->material = mirrorMat;
+        sph2->material = mirrorMat;
+        sph3->material = mirrorMat;
+        sph4->material = mirrorMat;
+        sph5->material = mirrorMat;
+
+        sc11.addLight(l1);
+        sc11.addLight(l2);
+
+        sc11.addShape(floor1);
+        sc11.addShape(floor2);
+        sc11.addShape(sph1);
+        sc11.addShape(sph2);
+        sc11.addShape(sph3);
+        sc11.addShape(sph4);
+        sc11.addShape(sph5);
+
+        sc11.bgColor = Vector3(.2,.2,1);
+    }
+
+    Scene sc12 = Scene("Spheres in Spheres");
+
+    {
+        sc12.bgColor = Vector3(.2,.2,1);
+
+        Light* l = new PointLight(Vector3(.4,.0,.0), Vector3(.5));
+
+        Material* m = new Material(Vector3(.7), Vector3(0), Vector3(0), 20, .7);
+
+        Sphere* sph1 = new Sphere(Vector3(1,1,-1), 1.41421356);
+        Sphere* sph2 = new Sphere(Vector3(-1,-1,-1), 1.41421356);
+        Sphere* sph3 = new Sphere(Vector3(1,-1,1), 1.41421356);
+        Sphere* sph4 = new Sphere(Vector3(-1,1,1), 1.41421356);
+
+        sph1->material = m;
+        sph2->material = m;
+        sph3->material = m;
+        sph4->material = m;
+        
+        sc12.addLight(l);
+
+        sc12.addShape(sph1);
+        sc12.addShape(sph2);
+        sc12.addShape(sph3);
+        sc12.addShape(sph4);
+    }
+
+    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9, &sc10, &sc11, &sc12};
 
     RenderTexture* renderBuffer = new RenderTexture();
 

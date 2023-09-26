@@ -43,7 +43,7 @@ Vector3 Material::shadeHit(Hit h, Scene* s, uint reflLimit) {
     }
     if (this->reflectiveIndex > 0 && reflLimit > 0) {
         Vector3 rayDir = h.ray.direction;
-        Vector3 reflDir = rayDir + h.normal * 2;
+        Vector3 reflDir = rayDir - (h.normal * 2 * rayDir.dot(h.normal));
 
         Ray reflRay = Ray(h.position, reflDir);
 
