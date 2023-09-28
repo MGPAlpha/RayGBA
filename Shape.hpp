@@ -36,9 +36,18 @@ class Sphere : public Shape {
         Hit intersectRay(Ray) override;
 };
 
-class Triangle : public Shape {
+class Plane : public Shape {
     public:
-        Vector3 v1, v2, v3, normal;
+        Vector3 position, normal;
+        Plane(Vector3 pos, Vector3 norm);
+        Plane(Vector3 pos);
+        Plane();
+        Hit intersectRay(Ray) override;
+};
+
+class Triangle : public Plane {
+    public:
+        Vector3 v1, v2, v3;
         Triangle(Vector3 v1, Vector3 v2, Vector3 v3);
         Triangle();
         Hit intersectRay(Ray) override;

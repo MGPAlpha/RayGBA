@@ -109,11 +109,10 @@ Hit Sphere::intersectRay(Ray r) {
     return result;
 }
 
-Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3) {
+Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3) : Plane(v1, (v2-v1).normalized().cross((v3-v1).normalized()).normalized()) {
     this->v1 = v1;
     this->v2 = v2;
     this->v3 = v3;
-    this->normal = (v2-v1).normalized().cross((v3-v1).normalized()).normalized();
 }
 
 Triangle::Triangle() : Triangle(Vector3(0,1,0), Vector3(1,-1,0), Vector3(-1,-1,0)) {
@@ -122,29 +121,14 @@ Triangle::Triangle() : Triangle(Vector3(0,1,0), Vector3(1,-1,0), Vector3(-1,-1,0
 
 
 Hit Triangle::intersectRay(Ray r) {
+    Hit result = Plane::intersectRay(r);
+
+    Vector3 intersection = result.position;
+
     Vector3 v1 = this->v1;
     Vector3 v2 = this->v2;
     Vector3 v3 = this->v3;
 
-    Vector3 u = v1-r.origin;
-
-    if (debugPrintingEnabled) {
-        mgba_printf("U: (%x, %x, %x)", u.x, u.y, u.z);
-        mgba_printf("Normal: (%x, %x, %x)", normal.x, normal.y, normal.z);
-        mgba_printf("Ray dir: (%x, %x, %x)", r.direction.x, r.direction.y, r.direction.z);
-    }
-
-    if ((this->normal.dot(r.direction)) == 0) {
-        return Hit();
-    }
-
-    fixed32 t = this->normal.dot(u) / this->normal.dot(r.direction);
-    Vector3 intersection = r.evaluateT(t);
-
-    if (debugPrintingEnabled) {
-        mgba_printf("T: %x", t);
-        mgba_printf("Intersection: (%x, %x, %x)", intersection.x, intersection.y, intersection.z);
-    }
 
     fixed32 areaABC = this->normal.dot((v1-v2).cross(v3-v1));
     fixed32 areaPBC = this->normal.dot((v2-intersection).cross(v3-intersection));
@@ -163,6 +147,32 @@ Hit Triangle::intersectRay(Ray r) {
     if (!((bary.x <= 0 && bary.y <= 0 && bary.z <= 0) || (bary.x >= 0 && bary.y >= 0 && bary.z >= 0))) {
         return Hit();
     }
+    
+    return result;
+}
+
+Plane::Plane(Vector3 pos, Vector3 norm) {
+    this->position = pos;
+    this->normal = norm.normalized();
+}
+
+Plane::Plane(Vector3 pos) : Plane(pos, Vector3(0,1,0)) {
+
+}
+
+Plane::Plane() : Plane(Vector3(0)) {
+
+}
+
+Hit Plane::intersectRay(Ray r) {
+    Vector3 u = position-r.origin;
+
+    if ((this->normal.dot(r.direction)) == 0) {
+        return Hit();
+    }
+
+    fixed32 t = this->normal.dot(u) / this->normal.dot(r.direction);
+    Vector3 intersection = r.evaluateT(t);
 
     Hit result = Hit(this);
     result.position = intersection;

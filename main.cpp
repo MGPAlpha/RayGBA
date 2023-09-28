@@ -608,7 +608,18 @@ int main() {
         sc13.addShape(t60);
     }
 
-    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9, &sc10, &sc11, &sc12, &sc13};
+    Scene sc14 = Scene("Plane Test");
+
+    {
+        Plane* p = new Plane(Vector3(0,-1,0), Vector3(-1,-1,0));
+        Material* m = new Material();
+        p->material = m;
+        Light* l = new PointLight(Vector3(0,1,-4));
+        sc14.addLight(l);
+        sc14.addShape(p);
+    }
+
+    std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9, &sc10, &sc11, &sc12, &sc13, &sc14};
 
     RenderTexture* renderBuffer = new RenderTexture();
 
