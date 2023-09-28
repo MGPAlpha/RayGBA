@@ -53,4 +53,15 @@ class Triangle : public Plane {
         Hit intersectRay(Ray) override;
 };
 
+class Disc : public Plane {
+    public:
+        fixed32 radius;
+        Disc(Vector3 pos, Vector3 norm, fixed32 rad);
+        Disc(Vector3 pos, fixed32 rad);
+        Disc(Vector3 pos, Vector3 norm);
+        Disc(Vector3 pos);
+        Disc(fixed32 rad);
+        Hit intersectRay(Ray) override;
+};
+
 #endif

@@ -185,3 +185,23 @@ Hit Plane::intersectRay(Ray r) {
     }
     return result;
 }
+
+
+Disc::Disc(Vector3 pos, Vector3 norm, fixed32 rad) : Plane(pos, norm) {
+    this->radius = rad;
+}
+
+Disc::Disc(Vector3 pos, fixed32 rad) : Disc(pos, Vector3(0,1,0), rad) {}
+Disc::Disc(Vector3 pos, Vector3 norm) : Disc(pos, norm, 1) {}
+Disc::Disc(Vector3 pos) : Disc(pos, 1) {}
+Disc::Disc(fixed32 rad) : Disc(Vector3(0)) {}
+
+Hit Disc::intersectRay(Ray r) {
+    Hit result = Plane::intersectRay(r);
+
+    if ((result.position - this->position).magnitude() > this->radius) {
+        return Hit();
+    }
+
+    return result;
+}
