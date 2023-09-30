@@ -19,6 +19,7 @@ class Scene {
         Hit generateSceneHit(Ray r, Shape* exclude, fixed32 tLimit);
         Hit generateSceneHit(Ray r, Shape* exclude);
         Hit generateSceneHit(Ray r);
+        void generateAllSubshapes();
         std::list<LightContribution>* generateLightContributions(Hit h);
         Vector3 bgColor = Vector3(.4, .4, .9);
         std::string getName();

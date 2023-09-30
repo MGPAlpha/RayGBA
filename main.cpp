@@ -608,15 +608,16 @@ int main() {
         sc13.addShape(t60);
     }
 
-    Scene sc14 = Scene("Disc Test");
+    Scene sc14 = Scene("Cylinder Test");
 
     {
-        Disc* d = new Disc(Vector3(0,-1,-4), 5);
+        Cylinder* c = new Cylinder(Vector3(0,0,-4),1,2);
         Material* m = new Material();
-        d->material = m;
-        Light* l = new PointLight(Vector3(0,1,-4));
+        m->diffuseColor = Vector3(1);
+        c->material = m;
+        Light* l = new PointLight(Vector3(0,0,3));
         sc14.addLight(l);
-        sc14.addShape(d);
+        sc14.addShape(c);
     }
 
     std::vector<Scene*> scenes = std::vector<Scene*>{&sc1, &sc2, &sc3, &sc4, &sc5, &sc6, &sc7, &sc8, &sc9, &sc10, &sc11, &sc12, &sc13, &sc14};

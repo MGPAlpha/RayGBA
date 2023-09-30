@@ -46,3 +46,9 @@ std::list<LightContribution>* Scene::generateLightContributions(Hit h) {
 string Scene::getName() {
     return this->name;
 }
+
+void Scene::generateAllSubshapes() {
+    for (Shape* s : shapes) {
+        s->generateSubshapes();
+    }
+}

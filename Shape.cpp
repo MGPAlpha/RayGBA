@@ -194,7 +194,8 @@ Disc::Disc(Vector3 pos, Vector3 norm, fixed32 rad) : Plane(pos, norm) {
 Disc::Disc(Vector3 pos, fixed32 rad) : Disc(pos, Vector3(0,1,0), rad) {}
 Disc::Disc(Vector3 pos, Vector3 norm) : Disc(pos, norm, 1) {}
 Disc::Disc(Vector3 pos) : Disc(pos, 1) {}
-Disc::Disc(fixed32 rad) : Disc(Vector3(0)) {}
+Disc::Disc(fixed32 rad) : Disc(Vector3(0), rad) {}
+Disc::Disc() : Disc(1) {}
 
 Hit Disc::intersectRay(Ray r) {
     Hit result = Plane::intersectRay(r);
@@ -205,3 +206,71 @@ Hit Disc::intersectRay(Ray r) {
 
     return result;
 }
+
+Cylinder::Cylinder(Vector3 pos, Vector3 norm, fixed32 rad, fixed32 height) : Disc(pos, norm, rad) {
+    this->height = height;
+}
+Cylinder::Cylinder(Vector3 pos, Vector3 norm, fixed32 rad) : Cylinder(pos, norm, rad, 1) {}
+Cylinder::Cylinder(Vector3 pos, Vector3 norm) : Cylinder(pos, norm, 1) {}
+Cylinder::Cylinder(Vector3 pos, fixed32 rad, fixed32 height) : Cylinder(pos, Vector3(0,1,0), rad, height) {}
+Cylinder::Cylinder(Vector3 pos, fixed32 rad) : Cylinder(pos, rad, 1) {}
+Cylinder::Cylinder(Vector3 pos) : Cylinder(pos, 1) {}
+Cylinder::Cylinder(fixed32 rad, fixed32 height) : Cylinder(Vector3(0), rad, height) {}
+Cylinder::Cylinder(fixed32 rad) : Cylinder(rad, 1) {}
+Cylinder::Cylinder() : Cylinder(1) {}
+
+Hit Cylinder::intersectRay(Ray r) {
+
+    std::list<Hit> hitOptions = std::list<Hit>();
+    Hit d1Hit = d1.intersectRay(r);
+    if (d1Hit) hitOptions.push_front(d1Hit);
+    Hit d2Hit = d2.intersectRay(r);
+    if (d2Hit) hitOptions.push_front(d2Hit);
+
+
+    Vector3 o = r.origin;
+    Vector3 d = r.direction;
+    Vector3 cVec = this->position - o;
+    
+    fixed32 a = d.x*d.x + d.z*d.z;
+    fixed32 b = d.x*cVec.x*-2 + d.z*cVec.z*-2;
+    fixed32 c = cVec.x*cVec.x + cVec.z*cVec.z - this->radius*this->radius;
+    
+    fixed32 discrim = b*b - a * c * 4;
+    if (discrim >= 0) {
+        fixed32 root = discrim.sqrt();
+        std::list<fixed32> tOptions = std::list<fixed32>{(-b + root)/(a*2), (-b - root)/(a*2)};
+
+        for (fixed32 t : tOptions) {
+            if (t<0) continue;
+            Hit h = Hit(this);
+            h.t = t;
+            h.position = r.evaluateT(t);
+            if (!(h.position.y < this->position.y + this->height/2 && h.position.y > this->position.y - this->height/2)) continue;
+            h.normal = h.position - this->position;
+            h.normal.y = 0;
+            h.normal = h.normal.normalized();
+            h.ray = r;
+            hitOptions.push_back(h);
+        }
+    }
+
+    if (hitOptions.size() <= 0) return Hit();
+
+    Hit outHit;
+
+    outHit = *std::min_element(hitOptions.begin(), hitOptions.end(), [](Hit a, Hit b){
+        return b.t > a.t;
+    });
+
+    outHit.shape = this;
+
+    return outHit;
+
+}
+
+void Cylinder::generateSubshapes() {
+    d1 = Disc(this->position - this->normal * this->height / 2, this->normal, this->radius);
+    d2 = Disc(this->position + this->normal * this->height / 2, this->normal, this->radius);
+}
+

@@ -16,6 +16,7 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
     lowerAimBound.z = -1;
 
     unsigned short bgColor = sc->bgColor.toGBAColor();
+    sc->generateAllSubshapes();
 
     for (int j = 0; j < height; j++) {
         
