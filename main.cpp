@@ -11,6 +11,16 @@
 #include "Renderer.hpp"
 #include "DrawUtils3.hpp"
 
+#include "UI.hpp"
+#include "UILayouts.hpp"
+#include "UIElements.hpp"
+
+extern "C" {
+    #include "TestImage.h"
+}
+
+using namespace ui;
+
 extern "C" {
     #include "HW05Lib.h"
 }
@@ -643,6 +653,27 @@ int main() {
     //         if (textBox.isPointInside(ScreenPoint(i,j))) return;
     //         setPixel3({i,j}, color);
     // });
+
+    UIWindow* w = new UIWindow("RayGBA Launch Screen", false, 180, 120);
+    UIImage* image = new UIImage(TestImage, TESTIMAGE_WIDTH, TESTIMAGE_HEIGHT);
+    UINode* newSceneLabel = new UILabel("New Scene");
+    UINode* openBuiltinScene = new UILabel("Open Scene");
+    UIVerticalLayout* rootNode = new UIVerticalLayout();
+    UIHorizontalLayout* menuButtons = new UIHorizontalLayout();
+    
+    // rootNode->stretchX = true;
+    // rootNode->stretchY = true;
+    rootNode->addChild(image);
+    rootNode->addChild(menuButtons);
+    menuButtons->stretchX = true;
+    rootNode->stretchX = true;
+    rootNode->stretchY = true;
+    menuButtons->addChild(newSceneLabel);
+    menuButtons->addChild(openBuiltinScene);
+    w->setRootNode(rootNode);
+    UISystem::openWindow(w);
+    UISystem::render();
+    while (1);
 
     int selectedIndex = 0;
     bool menuOpened = false;

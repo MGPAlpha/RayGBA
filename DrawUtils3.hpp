@@ -9,6 +9,7 @@ struct ScreenPoint {
 };
 
 struct ScreenRect {
+    ScreenRect();
     ScreenRect(ScreenPoint p1, ScreenPoint p2);
     ScreenRect(ScreenPoint p1, unsigned short width, unsigned short height);
     ScreenRect(unsigned short i1, unsigned short j1, unsigned short i2, unsigned short j2);

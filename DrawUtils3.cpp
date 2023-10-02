@@ -16,6 +16,10 @@ ScreenPoint::ScreenPoint(unsigned short i, unsigned short j) {
 
 ScreenPoint::ScreenPoint() : ScreenPoint(0,0) {}
 
+ScreenRect::ScreenRect() : ScreenRect(0,0,0,0) {
+
+}
+
 ScreenRect::ScreenRect(ScreenPoint p1, ScreenPoint p2) {
     if (p1.i > p2.i) swap(p1.i, p2.i);
     if (p1.j > p2.j) swap(p1.j, p2.j);
