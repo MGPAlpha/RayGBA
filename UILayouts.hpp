@@ -20,6 +20,7 @@ namespace ui {
         public:
             virtual void drawNodeInternal(ScreenRect r) override;
             virtual ScreenPoint getPreferredSize() override;
+            virtual UISelectionNode* generateSelectionNodeInternal() override;
             bool stretchX;
             bool stretchY;
     };
@@ -28,6 +29,7 @@ namespace ui {
         public:
             virtual void drawNodeInternal(ScreenRect r) override;
             virtual ScreenPoint getPreferredSize() override;
+            // virtual UISelectionNode* generateSelectionNodeInternal() override;
             bool stretchX;
             bool stretchY;
     };

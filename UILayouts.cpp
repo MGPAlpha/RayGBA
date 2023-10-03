@@ -55,6 +55,27 @@ namespace ui {
 
         return ScreenPoint(width, height);
     }
+    UISelectionNode* UIHorizontalLayout::generateSelectionNodeInternal() {
+
+        UISelectionNode* selfNode = new UISelectionNode(this);
+        UISelectionNode* previous;
+        for (UINode* n : this->children) {
+            if (!n->selectable) continue;
+            UISelectionNode* nSelection = n->generateSelectionNode();
+            if (previous) {
+                previous->right = nSelection;
+                nSelection->left = previous;
+            }
+            previous = nSelection;
+            selfNode->children.push_back(nSelection);
+        }
+
+        return selfNode;
+    }
+
+
+
+
 
     void UIVerticalLayout::drawNodeInternal(ScreenRect r) {
         

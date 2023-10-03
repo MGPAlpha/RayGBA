@@ -3,6 +3,7 @@
 extern "C" {
 
     #include "HW05Lib.h"
+    #include "print.h"
 
 }
 
@@ -90,6 +91,23 @@ namespace ui {
         lastUsedBounds = r;
         drawNodeInternal(r);
     }
+
+
+
+    UISelectionNode* UINode::generateSelectionNode() {
+        UISelectionNode* n = this->generateSelectionNodeInternal();
+        return n;
+    }
+
+    UISelectionNode* UINode::generateSelectionNodeInternal() {
+        return new UISelectionNode(this);
+    }
+
+    UISelectionNode::UISelectionNode(UINode* node) {
+        this->node = node;
+    }
+
+
 
 
 }

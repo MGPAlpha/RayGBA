@@ -658,8 +658,11 @@ int main() {
     UIImage* image = new UIImage(TestImage, TESTIMAGE_WIDTH, TESTIMAGE_HEIGHT);
     UINode* newSceneLabel = new UILabel("New Scene");
     UINode* openBuiltinScene = new UILabel("Open Scene");
+    newSceneLabel->selectable = true;
+    openBuiltinScene->selectable = true;
     UIVerticalLayout* rootNode = new UIVerticalLayout();
     UIHorizontalLayout* menuButtons = new UIHorizontalLayout();
+    menuButtons->selectable = true;
     
     // rootNode->stretchX = true;
     // rootNode->stretchY = true;
@@ -670,6 +673,10 @@ int main() {
     rootNode->stretchY = true;
     menuButtons->addChild(newSceneLabel);
     menuButtons->addChild(openBuiltinScene);
+
+    UISelectionNode* sNode = menuButtons->generateSelectionNode();
+    
+    w->activeSelectionTree = sNode;
     w->setRootNode(rootNode);
     UISystem::openWindow(w);
     UISystem::render();
