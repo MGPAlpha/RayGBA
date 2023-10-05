@@ -122,5 +122,22 @@ namespace ui {
 
         return ScreenPoint(width, height);
     }
+    UISelectionNode* UIVerticalLayout::generateSelectionNodeInternal() {
+
+        UISelectionNode* selfNode = new UISelectionNode(this);
+        UISelectionNode* previous = nullptr;
+        for (UINode* n : this->children) {
+            if (!n->selectable) continue;
+            UISelectionNode* nSelection = n->generateSelectionNode();
+            if (previous) {
+                previous->down = nSelection;
+                nSelection->up = previous;
+            }
+            previous = nSelection;
+            selfNode->children.push_back(nSelection);
+        }
+
+        return selfNode;
+    }
 
 }

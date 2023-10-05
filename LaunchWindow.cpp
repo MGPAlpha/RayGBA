@@ -3,6 +3,8 @@
 #include "UIElements.hpp"
 #include "UILayouts.hpp"
 
+#include "OpenSceneWindow.hpp"
+
 extern "C" {
     #include "print.h"
     #include "TestImage.h"
@@ -30,7 +32,7 @@ namespace ui {
         menuButtons->addChild(newSceneLabel);
         openBuiltinScene->onSelect = [this](){
             UISystem::closeWindow(this);
-            mgba_printf("Open selected");
+            UISystem::openWindow(new OpenSceneWindow());
         };
         menuButtons->addChild(openBuiltinScene);
 

@@ -79,7 +79,7 @@ SceneBuilder::SceneBuilder(std::string name, function<Scene*()> fn) : function<S
     this->name = name;
 }
 
-Scene* SceneBuilder::operator()() {
+Scene* SceneBuilder::operator()() const {
     Scene* sc = function<Scene*()>::operator()();
     sc->setName(this->name);
     return sc;

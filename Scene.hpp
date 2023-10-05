@@ -37,7 +37,7 @@ class SceneBuilder : public std::function<Scene*()> {
         SceneBuilder(std::string name, std::function<Scene*()> fn);
         std::string name;
 
-        Scene* operator()();    
+        Scene* operator()() const;    
 };
 
 #endif
