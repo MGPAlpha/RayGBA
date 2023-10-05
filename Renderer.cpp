@@ -25,8 +25,8 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
         for (int i = 0; i < width; i++) {
 
             if (i == 120 && j == 130) {
-                debugPrintingEnabled = true;
                 mgba_printf("Drawing pixel (%d, %d)", i, j);
+                debugPrintingEnabled = true;
             } else {
                 debugPrintingEnabled = false;
             }

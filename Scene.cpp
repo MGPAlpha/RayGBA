@@ -1,4 +1,5 @@
 #include "Scene.hpp"
+#include <set>
 
 using namespace std;
 
@@ -47,8 +48,41 @@ string Scene::getName() {
     return this->name;
 }
 
+void Scene::setName(string name) {
+    this->name = name;
+}
+
+
 void Scene::generateAllSubshapes() {
     for (Shape* s : shapes) {
         s->generateSubshapes();
     }
 }
+
+Scene::~Scene() {
+    mgba_printf("Destroying scene");
+    std::set<Material*> mats = std::set<Material*>();
+    for (Shape* s : shapes) {
+        mats.insert(s->material);
+        delete s;
+    }
+    for (Light* l : lights) {
+        delete l;
+    }
+    for (Material* m : mats) {
+        delete m;
+    }
+}
+
+
+SceneBuilder::SceneBuilder(std::string name, function<Scene*()> fn) : function<Scene*()>(fn) {
+    this->name = name;
+}
+
+Scene* SceneBuilder::operator()() {
+    Scene* sc = function<Scene*()>::operator()();
+    sc->setName(this->name);
+    return sc;
+}    
+
+
