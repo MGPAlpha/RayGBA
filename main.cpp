@@ -15,6 +15,8 @@
 #include "UILayouts.hpp"
 #include "UIElements.hpp"
 
+#include "LaunchWindow.hpp"
+
 extern "C" {
     #include "TestImage.h"
 }
@@ -654,33 +656,22 @@ int main() {
     //         setPixel3({i,j}, color);
     // });
 
-    UIWindow* w = new UIWindow("RayGBA Launch Screen", false, 180, 120);
-    UIImage* image = new UIImage(TestImage, TESTIMAGE_WIDTH, TESTIMAGE_HEIGHT);
-    UINode* newSceneLabel = new UILabel("New Scene");
-    UINode* openBuiltinScene = new UILabel("Open Scene");
-    newSceneLabel->selectable = true;
-    openBuiltinScene->selectable = true;
-    UIVerticalLayout* rootNode = new UIVerticalLayout();
-    UIHorizontalLayout* menuButtons = new UIHorizontalLayout();
-    menuButtons->selectable = true;
-    
-    // rootNode->stretchX = true;
-    // rootNode->stretchY = true;
-    rootNode->addChild(image);
-    rootNode->addChild(menuButtons);
-    menuButtons->stretchX = true;
-    rootNode->stretchX = true;
-    rootNode->stretchY = true;
-    menuButtons->addChild(newSceneLabel);
-    menuButtons->addChild(openBuiltinScene);
+    UISystem::defaultStartup = [](){
+        UIWindow* w = new LaunchWindow();
+        
+        UISystem::openWindow(w);
+    };
 
-    UISelectionNode* sNode = menuButtons->generateSelectionNode();
-    
-    w->activeSelectionTree = sNode;
-    w->setRootNode(rootNode);
-    UISystem::openWindow(w);
-    UISystem::render();
-    while (1);
+    while (1) {
+
+        // mgba_printf("window navstack size before update: %d", w->navigationStack.size());
+
+        bool uiDirty = UISystem::updateNavigation();
+
+        waitForVBlank();
+
+        if (uiDirty) UISystem::render();
+    }
 
     int selectedIndex = 0;
     bool menuOpened = false;

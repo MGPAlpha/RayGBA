@@ -58,7 +58,7 @@ namespace ui {
     UISelectionNode* UIHorizontalLayout::generateSelectionNodeInternal() {
 
         UISelectionNode* selfNode = new UISelectionNode(this);
-        UISelectionNode* previous;
+        UISelectionNode* previous = nullptr;
         for (UINode* n : this->children) {
             if (!n->selectable) continue;
             UISelectionNode* nSelection = n->generateSelectionNode();

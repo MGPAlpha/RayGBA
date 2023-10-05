@@ -2,6 +2,7 @@
 #define UI_HPP
 
 #include <vector>
+#include <list>
 #include <string>
 #include <functional>
 #include "DrawUtils3.hpp"
@@ -21,9 +22,15 @@ namespace ui {
     class UISystem {
         public:
             static void openWindow(UIWindow* w);
+            static void closeWindow(UIWindow* w);
             static void render();
-            static vector<UIWindow*> openWindows;
+
+            static bool updateNavigation();
+
+            static function<void()> defaultStartup;
+            
         private:
+            static vector<UIWindow*> openWindows;
             
     };
 
@@ -40,16 +47,21 @@ namespace ui {
             UINode* getRoot();
 
             void setRootNode(UINode* n);
-            UISelectionNode* activeSelectionTree;
+            void initializeNavigation(UINode* root);
+            bool processButtonInput(ushort b);
+            list<UISelectionNode*> navigationStack;
+            virtual ~UIWindow();
         protected:
         private:
+            UISelectionNode* activeSelectionTree;
             string name;
             bool fullscreen;
             int width, height;
             ScreenPoint anchor;
             UINode* rootNode;
             void drawWindow(ScreenRect r);
-            
+            UISelectionNode* selectedNode;
+            void selectNode(UISelectionNode* n);
     };
 
     class UINode {
@@ -74,11 +86,12 @@ namespace ui {
     class UISelectionNode {
         public:
             UISelectionNode(UINode* node);
-            UISelectionNode* left;
-            UISelectionNode* right;
-            UISelectionNode* up;
-            UISelectionNode* down;
+            UISelectionNode* left = nullptr;
+            UISelectionNode* right = nullptr;
+            UISelectionNode* up = nullptr;
+            UISelectionNode* down = nullptr;
             vector<UISelectionNode*> children;
+            UINode* getNode();
         private:
             UINode* node;
     };

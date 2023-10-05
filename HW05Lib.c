@@ -72,7 +72,7 @@ void drawRect4(Rect rect, volatile unsigned char colorIndex) {
 // Fill the entire screen with a single color in Mode 3
 void fillScreen3(volatile unsigned short color) {
     unsigned short c = color;
-	DMANow(3, &c, videoBuffer, DMA_SOURCE_FIXED | (SCREENWIDTH * SCREENHEIGHT));
+	DMANow(3, &color, videoBuffer, DMA_SOURCE_FIXED | (SCREENWIDTH * SCREENHEIGHT));
 }
 
 // Fill the entire screen with a single color in Mode 4

@@ -12,7 +12,7 @@ namespace ui {
         ScreenPoint anchor = r.p1;
         anchor.j += (r.p2.j - r.p1.j - 8)/2;
         anchor.i += (r.p2.i - r.p1.i - this->str.length()*6)/2;
-        DrawUtils3::drawString(anchor, this->str.c_str(), WHITE);
+        DrawUtils3::drawString(anchor, this->str.c_str(), this->selected ? YELLOW : WHITE);
     }
     ScreenPoint UILabel::getPreferredSize() {
         return ScreenPoint(str.length()*6, 8);
