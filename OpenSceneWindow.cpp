@@ -1,6 +1,7 @@
 #include "OpenSceneWindow.hpp"
 
 #include "SceneCatalog.hpp"
+#include "RenderWindow.hpp"
 
 OpenSceneWindow::OpenSceneWindow() : UIWindow("Open Scene") {
     UIVerticalLayout* root = new UIVerticalLayout();
@@ -12,7 +13,8 @@ OpenSceneWindow::OpenSceneWindow() : UIWindow("Open Scene") {
         UILabel* sceneName = new UILabel(s.name);
         sceneName->onSelect = [this, s](){
             Scene* sceneToLoad = s();
-
+            UISystem::openWindow(new RenderWindow(sceneToLoad));
+            UISystem::closeWindow(this);
         };
         sceneName->selectable = true;
         sceneList->addChild(sceneName);

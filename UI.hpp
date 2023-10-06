@@ -51,6 +51,7 @@ namespace ui {
             bool processButtonInput(ushort b);
             list<UISelectionNode*> navigationStack;
             virtual ~UIWindow();
+            bool showTitle = true;
         protected:
         private:
             UISelectionNode* activeSelectionTree;

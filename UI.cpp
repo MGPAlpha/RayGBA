@@ -90,12 +90,14 @@ namespace ui {
 
     void UIWindow::drawWindow(ScreenRect r) {
         DrawUtils3::drawRect(r, BLACK);
-        ScreenPoint titlePoint = r.p1;
-        titlePoint.j += 1;
-        DrawUtils3::drawString(titlePoint, name.c_str(), WHITE);
-        DrawUtils3::drawLineHorizontal(r.p1.j+9, r.p1.i, r.p2.i, WHITE);
         ScreenRect contentRect = r;
-        contentRect.p1.j += 10;
+        if (showTitle) {
+            ScreenPoint titlePoint = r.p1;
+            titlePoint.j += 1;
+            DrawUtils3::drawString(titlePoint, name.c_str(), WHITE);
+            DrawUtils3::drawLineHorizontal(r.p1.j+9, r.p1.i, r.p2.i, WHITE);
+            contentRect.p1.j += 10;
+        }
         rootNode->drawNode(contentRect);
     }
 
