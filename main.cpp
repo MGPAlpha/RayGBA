@@ -644,21 +644,35 @@ int main() {
     //         setPixel3({i,j}, color);
     // });
 
-    int selectedIndex = 0;
+    enum MenuItems {
+        SCENE,
+        REFLECTIONS,
+        DITHERING,
+        TOTAL
+    };
+
     bool menuOpened = false;
     bool renderDirty = false;
+
+    int menuIndex = MenuItems::SCENE;
+    int sceneIndex = 0;
 
     buttons = BUTTONS;
     oldButtons = buttons;
 
     while (true) {
+
+        bool down = BUTTON_PRESSED(BUTTON_DOWN);
+        bool up = !down && BUTTON_PRESSED(BUTTON_UP);
+        bool right = BUTTON_PRESSED(BUTTON_RIGHT);
+        bool left = !right && BUTTON_PRESSED(BUTTON_LEFT);
         if (BUTTON_PRESSED(BUTTON_START)) {
             if (menuOpened) {
 
                 fillScreen3(BLACK);
-                ScreenRect textBox = DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,5), (std::string("Rendering: ") + scenes[selectedIndex]->getName()).c_str(), 3, WHITE, BLACK, WHITE);
+                ScreenRect textBox = DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,5), (std::string("Rendering: ") + scenes[sceneIndex]->getName()).c_str(), 3, WHITE, BLACK, WHITE);
 
-                Renderer::render(renderBuffer, scenes[selectedIndex],
+                Renderer::render(renderBuffer, scenes[sceneIndex],
                     [textBox](unsigned short i, unsigned short j, unsigned short color){
                         if (textBox.isPointInside(ScreenPoint(i,j))) return;
                         setPixel3({i,j}, color);
@@ -670,12 +684,33 @@ int main() {
                 menuOpened = true;
                 renderDirty = true;
             }
-        } else if (BUTTON_PRESSED(BUTTON_LEFT)) {
-            selectedIndex = (selectedIndex-1);
-            if (selectedIndex < 0) selectedIndex = scenes.size()-1;
+        } else if (left || right) {
+            switch (menuIndex) {
+                case MenuItems::SCENE:
+                    if (left) {
+                        sceneIndex = (sceneIndex-1);
+                        if (sceneIndex < 0) sceneIndex = scenes.size()-1;
+                        renderDirty = true;
+                    } else if (right) {
+                        sceneIndex = (sceneIndex+1)%scenes.size();
+                        renderDirty = true;
+                    }
+                    break;
+                case MenuItems::REFLECTIONS:
+                    if (left) {
+                        Renderer::setReflectionLimit(Renderer::getReflectionLimit() - 1);
+                        renderDirty = true;
+                    } else if (right) {
+                        Renderer::setReflectionLimit(Renderer::getReflectionLimit() + 1);
+                        renderDirty = true;
+                    }
+            }
+        } else if (up) {
+            menuIndex = (menuIndex-1);
+            if (menuIndex < 0) menuIndex = MenuItems::TOTAL-1;
             renderDirty = true;
-        } else if (BUTTON_PRESSED(BUTTON_RIGHT)) {
-            selectedIndex = (selectedIndex+1)%scenes.size();
+        } else if (down) {
+            menuIndex = (menuIndex+1)%MenuItems::TOTAL;
             renderDirty = true;
         }
 
@@ -683,7 +718,14 @@ int main() {
         if (renderDirty) {
             renderBuffer->drawFullscreenUnsafe();
             if (menuOpened) {
-                DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,5), (std::string("Render Scene: ") + scenes[selectedIndex]->getName()).c_str(), 3, WHITE, BLACK, WHITE);
+                bool currMenuItem = false;
+                currMenuItem = menuIndex == MenuItems::SCENE;
+                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,5), "Render Scene:", scenes[sceneIndex]->getName().c_str(), 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
+                currMenuItem = menuIndex == MenuItems::REFLECTIONS;
+                int reflectionLimit = Renderer::getReflectionLimit();
+                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,20), std::string("Reflections:").c_str(), (reflectionLimit > 0) ? std::to_string(reflectionLimit).c_str() : "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
+                currMenuItem = menuIndex == MenuItems::DITHERING;
+                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,35), std::string("Dithering:").c_str(), "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
             }
             renderDirty = false;
         }

@@ -3,6 +3,17 @@
 #include "Ray.hpp"
 #include "Shape.hpp"
 
+int Renderer::reflectionLimit = 5;
+
+int Renderer::getReflectionLimit() {
+    return reflectionLimit;
+}
+
+void Renderer::setReflectionLimit(int limit) {
+    if (limit < 0) limit = 0;
+    reflectionLimit = limit;
+}
+
 void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered) {
     unsigned short width = dest->getWidth();
     unsigned short height = dest->getHeight();
@@ -44,7 +55,7 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
             Hit h = sc->generateSceneHit(pixelRay);
             unsigned short color;
             if (h) {
-                Vector3 shade = h.shape->material->shadeHit(h, sc);
+                Vector3 shade = h.shape->material->shadeHit(h, sc, reflectionLimit);
                 color = shade.toGBAColor();
                 if (debugPrintingEnabled) {
 

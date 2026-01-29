@@ -115,3 +115,8 @@ ScreenRect DrawUtils3::drawTextBoxOneLine(ScreenPoint pos, const char *str, unsi
     return box;
 }
 
+ScreenRect DrawUtils3::drawMenuItemWithArrows(ScreenPoint pos, const char *str, const char *option, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline, bool arrows) {
+    return drawTextBoxOneLine(pos, (std::string(str) + std::string{char(arrows ? 17 : 32)} + std::string(option) + std::string{char(arrows ? 16 : 32)}).c_str(), padding, color, bg, outline);
+}
+
+

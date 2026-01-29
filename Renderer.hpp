@@ -11,7 +11,12 @@
 typedef std::function<void(unsigned short, unsigned short, unsigned short)> OnPixelRenderedCallback;
 
 class Renderer {
+    private:
+        static int reflectionLimit;
     public:
+        static int getReflectionLimit();
+        static void setReflectionLimit(int limit);
+
         static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered);
 
         static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame);

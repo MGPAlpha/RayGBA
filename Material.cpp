@@ -1,6 +1,6 @@
 #include "Material.hpp"
 
-Vector3 Material::shadeHit(Hit h, Scene* s, uint reflLimit) {
+Vector3 Material::shadeHit(Hit h, Scene* s, unsigned int reflLimit) {
     std::list<LightContribution>* lightContributions = s->generateLightContributions(h);
     if (debugPrintingEnabled) {
         mgba_printf("Light contributions:");

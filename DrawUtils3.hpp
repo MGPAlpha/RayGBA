@@ -30,6 +30,7 @@ class DrawUtils3 {
         static void drawString(ScreenPoint pos, const char *str, unsigned short color);
 
         static ScreenRect drawTextBoxOneLine(ScreenPoint pos, const char *str, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline);
+        static ScreenRect drawMenuItemWithArrows(ScreenPoint pos, const char *str, const char *option, unsigned short padding, unsigned short color, unsigned short bg, unsigned short outline, bool arrows);
 };
 
 #endif
