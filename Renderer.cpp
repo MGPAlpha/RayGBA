@@ -81,51 +81,25 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
 
 }
 
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame) {
-    render(dest, sc, position, fov, frame, nullptr);
+RenderCall::RenderCall(RenderTexture* dest, Scene* sc) {
+    this->destination = dest;
+    this->scene = sc;
 }
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, position, fov, CoordinateFrame(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1)), onPixelRendered);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, position, 60, frame, onPixelRendered);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, Vector3(0), fov, frame, onPixelRendered);
+bool RenderCall::render() {
+    Renderer::render(destination, scene, position, fov, coordinateFrame, onPixelRenderedCallback);
+    return true;
 }
 
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov) {
-    render(dest, sc, position, fov, nullptr);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, CoordinateFrame frame) {
-    render(dest, sc, position, 60, frame);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, position, 60, onPixelRendered);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, int fov, CoordinateFrame frame) {
-    render(dest, sc, fov, frame, nullptr);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, int fov, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, Vector3(0), fov, onPixelRendered);
-}
-void Renderer::render(RenderTexture* dest, Scene* sc, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, 60, frame, onPixelRendered);
-}
 
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position) {
-    render(dest, sc, position, 60);
+void RenderCall::setPosition(Vector3 pos) {
+    this->position = pos;
 }
-void Renderer::render(RenderTexture* dest, Scene* sc, int fov) {
-    render(dest, sc, fov, nullptr);
+void RenderCall::setFov(int fov) {
+    this->fov = fov;
 }
-void Renderer::render(RenderTexture* dest, Scene* sc, CoordinateFrame frame) {
-    render(dest, sc, frame, nullptr);
+void RenderCall::setFrame(CoordinateFrame frame) {
+    this->coordinateFrame = frame;
 }
-void Renderer::render(RenderTexture* dest, Scene* sc, OnPixelRenderedCallback onPixelRendered) {
-    render(dest, sc, Vector3(0), onPixelRendered);
-}
-
-void Renderer::render(RenderTexture* dest, Scene* sc) {
-    render(dest, sc, nullptr);
+void RenderCall::setOnPixelRenderedCallback(OnPixelRenderedCallback cb) {
+    this->onPixelRenderedCallback = cb;
 }

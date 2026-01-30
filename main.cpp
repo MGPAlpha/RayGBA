@@ -672,11 +672,12 @@ int main() {
                 fillScreen3(BLACK);
                 ScreenRect textBox = DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,5), (std::string("Rendering: ") + scenes[sceneIndex]->getName()).c_str(), 3, WHITE, BLACK, WHITE);
 
-                Renderer::render(renderBuffer, scenes[sceneIndex],
-                    [textBox](unsigned short i, unsigned short j, unsigned short color){
+                RenderCall renderCall = RenderCall(renderBuffer, scenes[sceneIndex]);
+                renderCall.setOnPixelRenderedCallback([textBox](unsigned short i, unsigned short j, unsigned short color){
                         if (textBox.isPointInside(ScreenPoint(i,j))) return;
                         setPixel3({i,j}, color);
                 });
+                renderCall.render();
                 menuOpened = false;
                 renderDirty = true;
 

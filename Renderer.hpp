@@ -19,26 +19,23 @@ class Renderer {
 
         static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered);
 
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame);
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, OnPixelRenderedCallback onPixelRendered);
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered);
-        static void render(RenderTexture* dest, Scene* sc, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered);
+};
 
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov);
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, CoordinateFrame frame);
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, OnPixelRenderedCallback onPixelRendered);
-        static void render(RenderTexture* dest, Scene* sc, int fov, CoordinateFrame frame);
-        static void render(RenderTexture* dest, Scene* sc, int fov, OnPixelRenderedCallback onPixelRendered);
-        static void render(RenderTexture* dest, Scene* sc, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered);
-
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position);
-        static void render(RenderTexture* dest, Scene* sc, int fov);
-        static void render(RenderTexture* dest, Scene* sc, CoordinateFrame frame);
-        static void render(RenderTexture* dest, Scene* sc, OnPixelRenderedCallback onPixelRendered);
-
-        static void render(RenderTexture* dest, Scene* sc);
-
-
+class RenderCall {
+    private:
+        RenderTexture* destination;
+        Scene* scene;
+        Vector3 position = Vector3(0);
+        int fov = 60;
+        CoordinateFrame coordinateFrame = CoordinateFrame::IDENTITY;
+        OnPixelRenderedCallback onPixelRenderedCallback = nullptr;
+    public:
+        RenderCall(RenderTexture* dest, Scene* sc);
+        bool render();
+        void setPosition(Vector3 pos);
+        void setFov(int fov);
+        void setFrame(CoordinateFrame frame);
+        void setOnPixelRenderedCallback(OnPixelRenderedCallback cb);
 
 };
 
