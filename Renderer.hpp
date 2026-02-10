@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 
 typedef std::function<void(unsigned short, unsigned short, unsigned short)> OnPixelRenderedCallback;
+typedef std::function<bool()> CheckAbortRenderCallback;
 
 class Renderer {
     private:
@@ -17,7 +18,7 @@ class Renderer {
         static int getReflectionLimit();
         static void setReflectionLimit(int limit);
 
-        static void render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered);
+        static bool render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered, CheckAbortRenderCallback checkAbortRender);
 
 };
 
@@ -29,6 +30,7 @@ class RenderCall {
         int fov = 60;
         CoordinateFrame coordinateFrame = CoordinateFrame::IDENTITY;
         OnPixelRenderedCallback onPixelRenderedCallback = nullptr;
+        CheckAbortRenderCallback checkAbortRenderCallback = nullptr;
     public:
         RenderCall(RenderTexture* dest, Scene* sc);
         bool render();
@@ -36,6 +38,7 @@ class RenderCall {
         void setFov(int fov);
         void setFrame(CoordinateFrame frame);
         void setOnPixelRenderedCallback(OnPixelRenderedCallback cb);
+        void setCheckAbortRenderCallback(CheckAbortRenderCallback cb);
 
 };
 

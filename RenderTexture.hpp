@@ -18,6 +18,7 @@ class RenderTexture {
         unsigned short getWidth();
         unsigned short getHeight();
 
+        void fill(unsigned short color);
         bool writePixel(unsigned short i, unsigned short j, unsigned short color);
         unsigned short sampleGBAColor(int i, int j);
         Vector3 sampleVectorColor(int i, int j);

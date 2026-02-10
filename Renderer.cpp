@@ -14,15 +14,17 @@ void Renderer::setReflectionLimit(int limit) {
     reflectionLimit = limit;
 }
 
-void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered) {
+bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered, CheckAbortRenderCallback checkAbortRender) {
     unsigned short width = dest->getWidth();
     unsigned short height = dest->getHeight();
-    
+
     fixed32 tanFovOver2 = fixed32::tan(fov/2);
     Vector3 upperAimBound = Vector3(tanFovOver2*width/height, tanFovOver2, -1);
     Vector3 lowerAimBound = upperAimBound*-1;
 
     mgba_printf("Upper Bound: (%x, %x, %x)", upperAimBound.x, upperAimBound.y, upperAimBound.z);
+
+    dest->fill(0);
 
     lowerAimBound.z = -1;
 
@@ -34,7 +36,9 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
         
         fixed32 v = fixed32(j)/height;
         for (int i = 0; i < width; i++) {
-
+            if (checkAbortRender && checkAbortRender()) {
+                return false;
+            }
             if (i == 120 && j == 130) {
                 debugPrintingEnabled = true;
                 mgba_printf("Drawing pixel (%d, %d)", i, j);
@@ -79,6 +83,8 @@ void Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
         }
     }
 
+    return true;
+
 }
 
 RenderCall::RenderCall(RenderTexture* dest, Scene* sc) {
@@ -86,8 +92,7 @@ RenderCall::RenderCall(RenderTexture* dest, Scene* sc) {
     this->scene = sc;
 }
 bool RenderCall::render() {
-    Renderer::render(destination, scene, position, fov, coordinateFrame, onPixelRenderedCallback);
-    return true;
+    return Renderer::render(destination, scene, position, fov, coordinateFrame, onPixelRenderedCallback, checkAbortRenderCallback);
 }
 
 
@@ -102,4 +107,7 @@ void RenderCall::setFrame(CoordinateFrame frame) {
 }
 void RenderCall::setOnPixelRenderedCallback(OnPixelRenderedCallback cb) {
     this->onPixelRenderedCallback = cb;
+}
+void RenderCall::setCheckAbortRenderCallback(CheckAbortRenderCallback cb) {
+    this->checkAbortRenderCallback = cb;
 }

@@ -653,6 +653,7 @@ int main() {
 
     bool menuOpened = false;
     bool renderDirty = false;
+    bool lastRenderFailed = false;
 
     int menuIndex = MenuItems::SCENE;
     int sceneIndex = 0;
@@ -677,7 +678,17 @@ int main() {
                         if (textBox.isPointInside(ScreenPoint(i,j))) return;
                         setPixel3({i,j}, color);
                 });
-                renderCall.render();
+                renderCall.setCheckAbortRenderCallback([](){
+                    oldButtons = buttons;
+                    buttons = BUTTONS;
+                    if (BUTTON_PRESSED(BUTTON_SELECT)){
+                        return true;
+                    }
+                    return false;
+                });
+                bool success = renderCall.render();
+                lastRenderFailed = !success;
+                mgba_printf("Last render failed %x", lastRenderFailed);
                 menuOpened = false;
                 renderDirty = true;
 
@@ -727,6 +738,10 @@ int main() {
                 DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,20), std::string("Reflections:").c_str(), (reflectionLimit > 0) ? std::to_string(reflectionLimit).c_str() : "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
                 currMenuItem = menuIndex == MenuItems::DITHERING;
                 DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,35), std::string("Dithering:").c_str(), "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
+            }
+            if (lastRenderFailed) {
+                mgba_printf("drawing fail msg");
+                DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,140), "Render Aborted", 3, RED, BLACK, WHITE);
             }
             renderDirty = false;
         }

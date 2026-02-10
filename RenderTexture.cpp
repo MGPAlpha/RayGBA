@@ -31,6 +31,11 @@ unsigned short RenderTexture::getWidth() {
     return this->width;
 }
 
+void RenderTexture::fill(unsigned short color) {
+    unsigned int src = color | color << 16;
+    DMANow(3, &src, this->buffer, DMA_32 | DMA_SOURCE_FIXED | DMA_DESTINATION_INCREMENT | this->width * this->height / 2);
+}
+
 bool RenderTexture::writePixel(unsigned short i, unsigned short j, unsigned short color) {
     if (i < width && j < height) {
         buffer[i+j*width] = color;
