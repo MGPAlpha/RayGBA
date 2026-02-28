@@ -154,6 +154,7 @@ typedef struct Vector3 {
         g = fixed32((color & 0b1111100000)>>5) / 31;
         b = fixed32((color & 0b111110000000000)>>10) / 31;
         Vector3 result = Vector3(r,g,b);
+        return result;
     }
 
 } Vector3;

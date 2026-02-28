@@ -10,6 +10,7 @@
 #include "RenderTexture.hpp"
 #include "Renderer.hpp"
 #include "DrawUtils3.hpp"
+#include "Timer.hpp"
 
 extern "C" {
     #include "HW05Lib.h"
@@ -742,6 +743,10 @@ int main() {
             if (lastRenderFailed) {
                 mgba_printf("drawing fail msg");
                 DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,140), "Render Aborted", 3, RED, BLACK, WHITE);
+            } else if (int renderTime = Renderer::getLastRenderTime()) {
+                //This elif is somehow causing the initial screen clear to be green instead of black????
+                std::string lastRenderTime = Timer::millisToString(renderTime);
+                DrawUtils3::drawTextBoxOneLine(ScreenPoint(5,140), lastRenderTime.c_str(), 3, WHITE, BLACK, WHITE);
             }
             renderDirty = false;
         }

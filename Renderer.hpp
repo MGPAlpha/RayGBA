@@ -14,9 +14,12 @@ typedef std::function<bool()> CheckAbortRenderCallback;
 class Renderer {
     private:
         static int reflectionLimit;
+        static int lastRenderTime;
     public:
         static int getReflectionLimit();
         static void setReflectionLimit(int limit);
+
+        static int getLastRenderTime();
 
         static bool render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered, CheckAbortRenderCallback checkAbortRender);
 

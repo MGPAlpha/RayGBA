@@ -3,7 +3,10 @@
 #include "Ray.hpp"
 #include "Shape.hpp"
 
+#include "Timer.hpp"
+
 int Renderer::reflectionLimit = 5;
+int Renderer::lastRenderTime = 0;
 
 int Renderer::getReflectionLimit() {
     return reflectionLimit;
@@ -14,7 +17,13 @@ void Renderer::setReflectionLimit(int limit) {
     reflectionLimit = limit;
 }
 
+int Renderer::getLastRenderTime() {
+    return Renderer::lastRenderTime;
+}
+
 bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered, CheckAbortRenderCallback checkAbortRender) {
+    Timer::startTimer();
+    
     unsigned short width = dest->getWidth();
     unsigned short height = dest->getHeight();
 
@@ -82,6 +91,8 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
 
         }
     }
+
+    lastRenderTime = Timer::getTime();
 
     return true;
 
