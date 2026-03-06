@@ -146,8 +146,9 @@ void hideSprites(void) {
     DMANow(3, shadowOAM, OAM, 128*sizeof(OBJ_ATTR)/2);
 }
 
+// forced to not inline to avoid compilation that doesn't make sense
 // Set up and begin a DMA transfer
-void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt) {
+__attribute__((noinline)) DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt) {
     // Turn DMA off
     dma[channel].cnt = 0;
 
