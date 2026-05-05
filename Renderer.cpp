@@ -6,6 +6,7 @@
 #include "Timer.hpp"
 
 int Renderer::reflectionLimit = 5;
+int Renderer::colorDepth = 5;
 int Renderer::lastRenderTime = 0;
 
 int Renderer::getReflectionLimit() {
@@ -15,6 +16,16 @@ int Renderer::getReflectionLimit() {
 void Renderer::setReflectionLimit(int limit) {
     if (limit < 0) limit = 0;
     reflectionLimit = limit;
+}
+
+int Renderer::getColorDepth() {
+    return colorDepth;
+}
+
+void Renderer::setColorDepth(int depth) {
+    if (depth < 1) depth = 1;
+    if (depth > 5) depth = 5;
+    colorDepth = depth;
 }
 
 int Renderer::getLastRenderTime() {
@@ -77,6 +88,11 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
                 }
             } else {
                 color = bgColor;
+            }
+            if (colorDepth != 5) { // Need to posterize
+                unsigned short channelMask = ~(~0<<colorDepth)<<(5-colorDepth);
+                unsigned short colorMask = channelMask | channelMask << 5 | channelMask << 10;
+                color = color & colorMask; 
             }
             dest->writePixel(i, j, color);
             if (onPixelRendered) {

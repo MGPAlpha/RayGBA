@@ -648,6 +648,7 @@ int main() {
     enum MenuItems {
         SCENE,
         REFLECTIONS,
+        COLOR_DEPTH,
         DITHERING,
         TOTAL
     };
@@ -717,6 +718,16 @@ int main() {
                         Renderer::setReflectionLimit(Renderer::getReflectionLimit() + 1);
                         renderDirty = true;
                     }
+                    break;
+                case MenuItems::COLOR_DEPTH:
+                    if (left) {
+                        Renderer::setColorDepth(Renderer::getColorDepth() - 1);
+                        renderDirty = true;
+                    } else if (right) {
+                        Renderer::setColorDepth(Renderer::getColorDepth() + 1);
+                        renderDirty = true;
+                    }
+                    break;
             }
         } else if (up) {
             menuIndex = (menuIndex-1);
@@ -730,6 +741,7 @@ int main() {
         waitForVBlank();
         if (renderDirty) {
             renderBuffer->drawFullscreenUnsafe();
+            mgba_printf("menu index: %d", menuIndex);
             if (menuOpened) {
                 bool currMenuItem = false;
                 currMenuItem = menuIndex == MenuItems::SCENE;
@@ -737,8 +749,11 @@ int main() {
                 currMenuItem = menuIndex == MenuItems::REFLECTIONS;
                 int reflectionLimit = Renderer::getReflectionLimit();
                 DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,20), std::string("Reflections:").c_str(), (reflectionLimit > 0) ? std::to_string(reflectionLimit).c_str() : "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
+                currMenuItem = menuIndex == MenuItems::COLOR_DEPTH;
+                int colorDepth = Renderer::getColorDepth();
+                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,35), std::string("Color Depth:").c_str(), colorDepth == 5 ? "Full" : std::to_string(colorDepth).c_str(), 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
                 currMenuItem = menuIndex == MenuItems::DITHERING;
-                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,35), std::string("Dithering:").c_str(), "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
+                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,50), std::string("Dithering:").c_str(), "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
             }
             if (lastRenderFailed) {
                 mgba_printf("drawing fail msg");

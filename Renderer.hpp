@@ -15,9 +15,12 @@ class Renderer {
     private:
         static int reflectionLimit;
         static int lastRenderTime;
+        static int colorDepth;
     public:
         static int getReflectionLimit();
         static void setReflectionLimit(int limit);
+        static int getColorDepth();
+        static void setColorDepth(int depth);
 
         static int getLastRenderTime();
 
