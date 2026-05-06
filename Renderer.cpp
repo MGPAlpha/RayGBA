@@ -77,7 +77,7 @@ unsigned short Renderer::ditherValueHelper(fixed32 value, int bits, unsigned sho
     unsigned short discriminantMask = ~(~0<<bayerBits);
     int unusableSize = fractionalSize - bayerBits;
     unsigned short discriminant = (value.value & (discriminantMask<<unusableSize)) >> unusableSize;
-    if (discriminant >= bayerValue) usable++;
+    if (discriminant > bayerValue) usable++;
     return usable;
 }
 
