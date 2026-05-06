@@ -728,6 +728,15 @@ int main() {
                         renderDirty = true;
                     }
                     break;
+                case MenuItems::DITHERING:
+                    if (left) {
+                        Renderer::setDithering(Renderer::getDithering() - 1);
+                        renderDirty = true;
+                    } else if (right) {
+                        Renderer::setDithering(Renderer::getDithering() + 1);
+                        renderDirty = true;
+                    }
+                    break;
             }
         } else if (up) {
             menuIndex = (menuIndex-1);
@@ -741,7 +750,6 @@ int main() {
         waitForVBlank();
         if (renderDirty) {
             renderBuffer->drawFullscreenUnsafe();
-            mgba_printf("menu index: %d", menuIndex);
             if (menuOpened) {
                 bool currMenuItem = false;
                 currMenuItem = menuIndex == MenuItems::SCENE;
@@ -753,7 +761,10 @@ int main() {
                 int colorDepth = Renderer::getColorDepth();
                 DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,35), std::string("Color Depth:").c_str(), colorDepth == 5 ? "Full" : std::to_string(colorDepth).c_str(), 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
                 currMenuItem = menuIndex == MenuItems::DITHERING;
-                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,50), std::string("Dithering:").c_str(), "Off", 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
+                int dithering = Renderer::getDithering();
+                mgba_printf("Dithering: %d", dithering);
+                const char* ditherText = dithering == 0 ? "Off" : (dithering == 1 ? "2x2" : "4x4");
+                DrawUtils3::drawMenuItemWithArrows(ScreenPoint(5,50), std::string("Dithering:").c_str(), ditherText, 3, currMenuItem ? YELLOW : WHITE, BLACK, WHITE, currMenuItem);
             }
             if (lastRenderFailed) {
                 mgba_printf("drawing fail msg");

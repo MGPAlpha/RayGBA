@@ -7,7 +7,20 @@
 
 int Renderer::reflectionLimit = 5;
 int Renderer::colorDepth = 5;
+int Renderer::dithering = 0;
 int Renderer::lastRenderTime = 0;
+
+unsigned short bayer2[] = {
+    0, 2,
+    3, 1
+};
+
+unsigned short bayer4[] = {
+    0, 8, 2, 10,
+    12, 4, 14, 6,
+    3, 11, 1, 9,
+    15, 7, 13, 5
+};
 
 int Renderer::getReflectionLimit() {
     return reflectionLimit;
@@ -28,9 +41,47 @@ void Renderer::setColorDepth(int depth) {
     colorDepth = depth;
 }
 
+int Renderer::getDithering() {
+    return dithering;
+}
+
+void Renderer::setDithering(int dither) {
+    if (dither < 0) dither = 0;
+    if (dither > 2) dither = 2;
+    dithering = dither;
+}
+
 int Renderer::getLastRenderTime() {
     return Renderer::lastRenderTime;
 }
+
+unsigned short Renderer::ditherPixel(Vector3 color, int i, int j, int bits, unsigned short *bayerMatrix, int bayerSize) {
+    color = Vector3::clampBounds(color, Vector3(0), Vector3(1));
+    int iLocal = i % bayerSize;
+    int jLocal = j % bayerSize;
+    unsigned short bayerValue = bayerMatrix[bayerSize*jLocal+iLocal];
+    unsigned int r = ditherValueHelper(color.x, bits, bayerValue, bayerSize);
+    unsigned int g = ditherValueHelper(color.y, bits, bayerValue, bayerSize);
+    unsigned int b = ditherValueHelper(color.z, bits, bayerValue, bayerSize);
+    return r | g << 5 | b << 10;
+}
+
+unsigned short Renderer::ditherValueHelper(fixed32 value, int bits, unsigned short bayerValue, int bayerBits) {
+    unsigned short usableMask = ~(~0<<bits);
+    int fractionalSize = 16 - bits;
+    unsigned short usable = (value.value & (usableMask<<fractionalSize)) >> fractionalSize;
+    if (debugPrintingEnabled) {
+        // mgba_printf("Dithering usable:" )
+    }
+    if (usable == usableMask || value == 1) return usableMask;
+    unsigned short discriminantMask = ~(~0<<bayerBits);
+    int unusableSize = fractionalSize - bayerBits;
+    unsigned short discriminant = (value.value & (discriminantMask<<unusableSize)) >> unusableSize;
+    if (discriminant >= bayerValue) usable++;
+    return usable;
+}
+
+
 
 bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov, CoordinateFrame frame, OnPixelRenderedCallback onPixelRendered, CheckAbortRenderCallback checkAbortRender) {
     Timer::startTimer();
@@ -41,6 +92,12 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
     fixed32 tanFovOver2 = fixed32::tan(fov/2);
     Vector3 upperAimBound = Vector3(tanFovOver2*width/height, tanFovOver2, -1);
     Vector3 lowerAimBound = upperAimBound*-1;
+
+    int colorDepth = Renderer::getColorDepth();
+
+    int dithering = Renderer::getDithering();
+    unsigned short *bayer = dithering == 2 ? bayer4 : bayer2;
+    int bayerSize = dithering == 2 ? 4 : 2;
 
     mgba_printf("Upper Bound: (%x, %x, %x)", upperAimBound.x, upperAimBound.y, upperAimBound.z);
 
@@ -59,7 +116,7 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
             if (checkAbortRender && checkAbortRender()) {
                 return false;
             }
-            if (i == 120 && j == 130) {
+            if (i == 130 && j == 75) {
                 debugPrintingEnabled = true;
                 mgba_printf("Drawing pixel (%d, %d)", i, j);
             } else {
@@ -80,7 +137,11 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
             unsigned short color;
             if (h) {
                 Vector3 shade = h.shape->material->shadeHit(h, sc, reflectionLimit);
-                color = shade.toGBAColor();
+                if (dithering) {
+                    color = ditherPixel(shade, i, j, 5, bayer, bayerSize);
+                } else {
+                    color = shade.toGBAColor();
+                }
                 if (debugPrintingEnabled) {
 
                     mgba_printf("Vector Color: (%x, %x, %x)", shade.x, shade.y, shade.z);

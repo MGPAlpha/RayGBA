@@ -14,13 +14,19 @@ typedef std::function<bool()> CheckAbortRenderCallback;
 class Renderer {
     private:
         static int reflectionLimit;
-        static int lastRenderTime;
         static int colorDepth;
+        static int dithering;
+        static int lastRenderTime;
+
+        static unsigned short ditherPixel(Vector3 color, int i, int j, int bits, unsigned short *bayerMatrix, int bayerSize);
+        static unsigned short ditherValueHelper(fixed32 value, int bits, unsigned short bayerValue, int bayerBits);
     public:
         static int getReflectionLimit();
         static void setReflectionLimit(int limit);
         static int getColorDepth();
         static void setColorDepth(int depth);
+        static int getDithering();
+        static void setDithering(int dither);
 
         static int getLastRenderTime();
 
