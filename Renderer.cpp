@@ -60,9 +60,9 @@ unsigned short Renderer::ditherPixel(Vector3 color, int i, int j, int bits, unsi
     int iLocal = i % bayerSize;
     int jLocal = j % bayerSize;
     unsigned short bayerValue = bayerMatrix[bayerSize*jLocal+iLocal];
-    unsigned int r = ditherValueHelper(color.x, bits, bayerValue, bayerSize);
-    unsigned int g = ditherValueHelper(color.y, bits, bayerValue, bayerSize);
-    unsigned int b = ditherValueHelper(color.z, bits, bayerValue, bayerSize);
+    unsigned int r = ditherValueHelper(color.x, bits, bayerValue, bayerSize) << (5-bits);
+    unsigned int g = ditherValueHelper(color.y, bits, bayerValue, bayerSize) << (5-bits);
+    unsigned int b = ditherValueHelper(color.z, bits, bayerValue, bayerSize) << (5-bits);
     return r | g << 5 | b << 10;
 }
 
@@ -138,7 +138,7 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
             if (h) {
                 Vector3 shade = h.shape->material->shadeHit(h, sc, reflectionLimit);
                 if (dithering) {
-                    color = ditherPixel(shade, i, j, 5, bayer, bayerSize);
+                    color = ditherPixel(shade, i, j, colorDepth, bayer, bayerSize);
                 } else {
                     color = shade.toGBAColor();
                 }
@@ -150,7 +150,7 @@ bool Renderer::render(RenderTexture* dest, Scene* sc, Vector3 position, int fov,
             } else {
                 color = bgColor;
             }
-            if (colorDepth != 5) { // Need to posterize
+            if (colorDepth != 5 && !dithering) { // Need to posterize
                 unsigned short channelMask = ~(~0<<colorDepth)<<(5-colorDepth);
                 unsigned short colorMask = channelMask | channelMask << 5 | channelMask << 10;
                 color = color & colorMask; 
