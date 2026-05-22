@@ -159,4 +159,14 @@ typedef struct Vector3 {
 
 } Vector3;
 
+inline struct Vector3 operator/(const int& a, const Vector3& b) {
+    Vector3 result = Vector3(a/b.x, a/b.y, a/b.z);
+    return result;
+}
+
+inline struct Vector3 operator/(const fixed32& a, const Vector3& b) {
+    Vector3 result = Vector3(a/b.x, a/b.y, a/b.z);
+    return result;
+}
+
 #endif

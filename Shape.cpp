@@ -109,6 +109,15 @@ Hit Sphere::intersectRay(Ray r) {
     return result;
 }
 
+void Sphere::generateBoundingBox() {
+    this->boundingBox.a = this->transform.position - radius;
+    this->boundingBox.b = this->transform.position + radius;
+}
+
+BoundingBox3 Sphere::getBoundingBox() const {
+    return this->boundingBox;
+}
+
 Triangle::Triangle(Vector3 v1, Vector3 v2, Vector3 v3) : Plane(v1, (v2-v1).normalized().cross((v3-v1).normalized()).normalized()) {
     this->v1 = v1;
     this->v2 = v2;
@@ -272,5 +281,19 @@ Hit Cylinder::intersectRay(Ray r) {
 void Cylinder::generateSubshapes() {
     d1 = Disc(this->position - this->normal * this->height / 2, this->normal, this->radius);
     d2 = Disc(this->position + this->normal * this->height / 2, this->normal, this->radius);
+}
+
+void Cylinder::generateBoundingBox() {
+    this->boundingBox.a.y = this->position - this->height / 2;
+    this->boundingBox.b.y = this->position + this->height / 2;
+    
+    this->boundingBox.a.x = this->position.x - this->radius;
+    this->boundingBox.a.y = this->position.y - this->radius;
+    this->boundingBox.b.x = this->position.x + this->radius;
+    this->boundingBox.b.y = this->position.y + this->radius;
+}
+
+BoundingBox3 Cylinder::getBoundingBox() const {
+    return this->boundingBox;
 }
 

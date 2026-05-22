@@ -7,6 +7,7 @@ class Material;
 #include "Transform.hpp"
 #include "Ray.hpp"
 #include "Material.hpp"
+#include "BoundingBox3.hpp"
 
 
 typedef struct Hit {
@@ -24,9 +25,12 @@ class Shape {
         Material* material;
         Hit virtual intersectRay(Ray) = 0;
         void virtual generateSubshapes() {};
+        void virtual generateBoundingBox() {};
+        BoundingBox3 getBoundingBox();
+    private:
 };
 
-class Sphere : public Shape {
+class Sphere : public Shape, public BoundingBoxedShape {
     public:
         Transform transform;
         fixed32 radius;
@@ -35,6 +39,11 @@ class Sphere : public Shape {
         Sphere(fixed32 radius);
         Sphere();
         Hit intersectRay(Ray) override;
+
+        void generateBoundingBox() override;
+        BoundingBox3 getBoundingBox() const override;
+    private:
+        BoundingBox3 boundingBox;
 };
 
 class Plane : public Shape {
@@ -68,7 +77,7 @@ class Disc : public Plane {
         Hit intersectRay(Ray) override;
 };
 
-class Cylinder : public Disc {
+class Cylinder : public Disc, public BoundingBoxedShape {
     public: 
         fixed32 height;
         Cylinder(Vector3 pos, Vector3 norm, fixed32 rad, fixed32 height);
@@ -83,9 +92,14 @@ class Cylinder : public Disc {
 
         Hit intersectRay(Ray) override;
         void generateSubshapes() override;
+
+        void generateBoundingBox() override;
+        BoundingBox3 getBoundingBox() const override;
     private:
         Disc d1;
         Disc d2;
+
+        BoundingBox3 boundingBox;
 };
 
 #endif

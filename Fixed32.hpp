@@ -45,25 +45,25 @@ typedef struct fixed32 {
         return *this;
     }
 
-    inline struct fixed32 operator+(fixed32 b) {
+    inline struct fixed32 operator+(const fixed32& b) const {
         fixed32 result;
         result.value = this->value + b.value;
         return result;
     }
 
-    inline struct fixed32 operator+(int b) {
+    inline struct fixed32 operator+(const int& b) const {
         fixed32 result;
         result.value = this->value + (b<<16);
         return result;
     }
 
-    inline struct fixed32 operator-(fixed32 b) {
+    inline struct fixed32 operator-(const fixed32& b) const {
         fixed32 result;
         result.value = this->value - b.value;
         return result;
     }
 
-    inline struct fixed32 operator-(int b) {
+    inline struct fixed32 operator-(const int& b) const {
         fixed32 result;
         result.value = this->value - (b<<16);
         return result;
@@ -82,7 +82,7 @@ typedef struct fixed32 {
 
     }
 
-    inline struct fixed32 operator*(fixed32 b) {
+    inline struct fixed32 operator*(const fixed32& b) const {
         fixed32 result;
         long long resultVal = ((long long)this->value) * ((long long)b.value);
         // int requiredShift = 16;
@@ -93,13 +93,13 @@ typedef struct fixed32 {
         return result;
     }
 
-    inline struct fixed32 operator*(int b) {
+    inline struct fixed32 operator*(const int& b) const {
         fixed32 result;
         result.value = this->value * b;
         return result;
     }
 
-    inline struct fixed32 operator/(fixed32 b) {
+    inline struct fixed32 operator/(const fixed32& b) const {
         fixed32 result;
         long long divisor = ((long long)this->value) << 16;
 
@@ -107,48 +107,48 @@ typedef struct fixed32 {
         return result;
     }
 
-    inline struct fixed32 operator/(int b) {
+    inline struct fixed32 operator/(const int& b) const {
         fixed32 result;
         result.value = this->value / b;
         return result;
     }
 
-    inline struct fixed32 operator-() {
+    inline struct fixed32 operator-() const {
         fixed32 result;
         result.value = -this->value;
         return result;
     }
 
-    inline bool operator ==(const fixed32& b) {
+    inline bool operator ==(const fixed32& b) const {
         return this->value == b.value;
     }
-    inline bool operator ==(const int& b) {
+    inline bool operator ==(const int& b) const {
         return this->value == b<<16;
     }
 
-    inline bool operator <(const fixed32& b) {
+    inline bool operator <(const fixed32& b) const {
         return this->value < b.value;
     }
-    inline bool operator <(const int& b) {
+    inline bool operator <(const int& b) const {
         return this->value < b<<16;
     }
-    inline bool operator >(const fixed32& b) {
+    inline bool operator >(const fixed32& b) const {
         return this->value > b.value;
     }
-    inline bool operator >(const int& b) {
+    inline bool operator >(const int& b) const {
         return this->value > b<<16;
     }
 
-    inline bool operator <=(const fixed32& b) {
+    inline bool operator <=(const fixed32& b) const {
         return this->value <= b.value;
     }
-    inline bool operator <=(const int& b) {
+    inline bool operator <=(const int& b) const {
         return this->value <= b<<16;
     }
-    inline bool operator >=(const fixed32& b) {
+    inline bool operator >=(const fixed32& b) const {
         return this->value >= b.value;
     }
-    inline bool operator >=(const int& b) {
+    inline bool operator >=(const int& b) const {
         return this->value >= b<<16;
     }
 
@@ -197,5 +197,18 @@ typedef struct fixed32 {
 
 } fixed32;
 
+inline struct fixed32 operator/(const int& a, const fixed32& b) {
+    fixed32 result;
+    result.value = (a << 16 / (b.value>>8)) << 8;
+    return result;
+}
+
+inline struct fixed32 min(const fixed32& a, const fixed32& b) {
+    return a>b ? b : a;
+}
+
+inline struct fixed32 max(const fixed32& a, const fixed32& b) {
+    return a>b ? a : b;
+}
 
 #endif
